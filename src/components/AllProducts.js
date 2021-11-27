@@ -8,46 +8,31 @@ const AllProducts = ({ products, categories }) => {
   const [shownProducts, setProducts] = useState(products);
 
   const updateFilter = (id) => {
-    let newSidebarCategories = [];
     let filter = [];
-    for (var categoriesCounter in sidebarCategories) {
-      var category = sidebarCategories[categoriesCounter];
 
-      if (category.id === id) {
-        category.selected = !category.selected;
-      }
-
-      newSidebarCategories.push({
-        name: category.name,
-        id: category.id,
-        selected: category.selected,
-      });
-
-      if (category.selected) {
+    let newSidebarCategories = sidebarCategories.map((category) => {
+      const newCategory = {
+        ...category,
+        selected: category.id === id ? !category.selected : category.selected,
+      };
+      if (newCategory.selected) 
         filter.push(category.id);
-      }
-    }
+      return newCategory;
+    });
 
     setItems(newSidebarCategories);
 
     if (filter.length === 0) {
       setProducts(products);
     } else {
-      let filteredProducts = [];
-      for (var productCounter in products) {
-        var product = products[productCounter];
-
-        if (filter.includes(product.categoryId)) {
-          filteredProducts.push(product);
-        }
-      }
+      let filteredProducts = products.filter((product) => filter.includes(product.categoryId));
       setProducts(filteredProducts);
     }
   };
 
   return (
     <div>
-      <Sidebar categories={sidebarCategories} event={updateFilter} />
+      <Sidebar categories={sidebarCategories} onClickEvent={updateFilter} />
       {shownProducts.map((product) => {
         const category = sidebarCategories.find(
           (category) => category.id === product.categoryId

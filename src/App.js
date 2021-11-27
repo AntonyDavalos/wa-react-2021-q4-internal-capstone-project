@@ -13,18 +13,16 @@ import { useFeaturedBanners } from "./utils/hooks/useFeaturedBanners";
 // import Home from "./pages/Home";
 
 //JSON data
-import Banners from "./mocks/en-us/featured-banners.json";
 import Categories from "./mocks/en-us/product-categories.json";
-import FeaturedProducts from "./mocks/en-us/featured-products.json";
 import Products from "./mocks/en-us/products.json";
+import FeaturedProducts from "./mocks/en-us/featured-products.json";
+import Banners from "./mocks/en-us/featured-banners.json";
 
 //Components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import HomeSliderComponent from "./components/HomeSlider";
-import HomeCategoriesComponent from "./components/HomeCategories";
-import FeaturedProductsComponent from "./components/FeaturedProducts";
 import AllProducts from "./components/AllProducts";
+import Home from "./pages/Home";
 
 // Transform Banners to Array Of Banners
 const BannersArray = [];
@@ -47,6 +45,7 @@ const CategoriesArray = [];
     CategoriesArray.push({
       name: category.data.name,
       id: category.id,
+      url: category.data.main_image.url,
       selected: false
     });
   }
@@ -78,26 +77,7 @@ const CategoriesArray = [];
       categoryId: product.data.category.id
     });
   }
-
-const Home = ({ event }) => {
-  return (
-    <div className="Home">
-      <div className="featuredSlider">
-        <HomeSliderComponent banners={BannersArray} />
-      </div>
-      <div className="Categories">
-        <HomeCategoriesComponent categories={Categories.results} />
-      </div>
-      <div className="Products">
-        <FeaturedProductsComponent products={FeaturedProductsArray} categories={CategoriesArray} />
-        <button className="See-more-button" onClick={() => event()}>
-          View all products
-        </button>
-      </div>
-    </div>
-  );
-};
-
+  
 function App() {
   const [showHome, setHomeShow] = useState(true);
   const [showProducts, setProductsShow] = useState(false);
@@ -118,7 +98,7 @@ function App() {
     <div className="App">
       <Header event={changeToHomePage} />
       <div className="Body">
-        {showHome && <Home event={changeToProductsPage} />}
+        {showHome && <Home banners={BannersArray} featuredProducts={FeaturedProductsArray} categories={CategoriesArray} onClickEvent={changeToProductsPage} />}
         {showProducts && <AllProducts products={ProductsArray} categories={CategoriesArray}/>}
       </div>
       <Footer />

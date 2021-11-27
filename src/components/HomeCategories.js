@@ -41,26 +41,26 @@ const HomeCategories = ({ categories }) => {
         />
         <div className="Category">
           <img
-            src={categories[previousCategory].data.main_image.url}
+            src={categories[previousCategory].url}
             alt={"category " + (previousCategory + 1)}
             className="Category-image"
-            title={categories[previousCategory].data.name}
+            title={categories[previousCategory].name}
           />
         </div>
         <div className="Category">
           <img
-            src={categories[currentCategory].data.main_image.url}
+            src={categories[currentCategory].url}
             alt={"category " + (currentCategory + 1)}
             className="Category-image"
-            title={categories[currentCategory].data.name}
+            title={categories[currentCategory].name}
           />
         </div>
         <div className="Category">
           <img
-            src={categories[nextCategory].data.main_image.url}
+            src={categories[nextCategory].url}
             alt={"category " + (nextCategory + 1)}
             className="Category-image"
-            title={categories[nextCategory].data.name}
+            title={categories[nextCategory].name}
           />
         </div>
         <FaArrowAltCircleRight

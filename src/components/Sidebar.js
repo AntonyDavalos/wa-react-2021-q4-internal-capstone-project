@@ -1,22 +1,14 @@
 import React from "react";
 
-const Sidebar = ({ categories, event }) => {
+const Sidebar = ({ categories, onClickEvent }) => {
   return (
     <div className="Sidebar">
       {categories.map((category, index) => {
-        if (category.selected) {
-          return (
-            <div className="Selected-sidebar-element" onClick={() => event(category.id)} key={category.id}>
-              {category.name}
-            </div>
-          );
-        } else {
-          return (
-            <div className="Sidebar-element" onClick={() => event(category.id)} key={category.id}>
-              {category.name}
-            </div>
-          );
-        }
+        return (
+          <div className={`${category.selected ? "Selected-sidebar-element" : "Sidebar-element"}`} onClick={() => onClickEvent(category.id)} key={category.id}>
+            {category.name}
+          </div>
+        );
       })}
     </div>
   );

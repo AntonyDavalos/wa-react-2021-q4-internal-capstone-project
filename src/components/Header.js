@@ -7,7 +7,7 @@ const Header = ({event}) => {
       
     <div className="App-header">
         <div>
-          <span className="Title" onClick={() => event()}>
+          <span className="Title" onClick={event}>
             <img className="Logo" src={logo} alt="Logo" width="25px" />
             Muebleria Xtrema
           </span>
