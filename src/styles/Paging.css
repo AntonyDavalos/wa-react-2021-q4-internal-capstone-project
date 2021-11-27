@@ -1,0 +1,28 @@
+.Paging{
+    margin-top: 2%;
+}
+.Paging-element{
+    border: 2px solid black;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.Paging-element-active{
+    border: 2px solid black;
+    background-color: #004aff;
+    color: white;
+    border-radius: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+}

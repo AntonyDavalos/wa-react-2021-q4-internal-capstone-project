@@ -1,0 +1,29 @@
+.Sidebar {
+  position: fixed;
+  top: 40%;
+  width: 12%;
+  background: #0a0aaf;
+  border: 2px solid black;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: white;
+}
+
+.Sidebar-element {
+  cursor: pointer;
+  overflow-wrap: break-word;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.Selected-sidebar-element {
+  cursor: pointer;
+  overflow-wrap: break-word;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  background: #004aff;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

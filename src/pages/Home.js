@@ -1,22 +1,27 @@
 import React from "react"
 
-import HomeSlider from "./components/HomeSlider";
-import Banners from "./mocks/en-us/featured-banners.json";
-import HomeCategories from "./components/HomeCategories";
-import Categories from "./mocks/en-us/product-categories.json";
+//Called Components
+import HomeSliderComponent from "../components/HomeSlider";
+import HomeCategoriesComponent from "../components/HomeCategories";
+import FeaturedProductsComponent from "../components/FeaturedProducts";
 
-const Home = () => {
-    return (
-      <div className="Home">
-        <div className="featuredSlider">
-          <HomeSlider banners={Banners.results} />
-        </div>
-        <div className="Categories">
-          <HomeCategories categories={Categories.results} />
-        </div>
-        <div className="Products"></div>
+const Home = ({ banners, featuredProducts, categories, onClickEvent }) => {
+  return (
+    <div className="Home">
+      <div className="featuredSlider">
+        <HomeSliderComponent banners={banners} />
       </div>
-    );
-  };
+      <div className="Categories">
+        <HomeCategoriesComponent categories={categories} />
+      </div>
+      <div className="Products">
+        <FeaturedProductsComponent products={featuredProducts} categories={categories} />
+        <button className="See-more-button" onClick={onClickEvent}>
+          View all products
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default Home;

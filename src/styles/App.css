@@ -27,6 +27,7 @@
   float: left;
   margin-left: 20px;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .Logo{
@@ -67,6 +68,16 @@
   width: 100%;
   height: 40px;
   padding-top: 15px;
+}
+
+.See-more-button{
+  margin-top: 2%;
+  background-color: #004aff;
+  border: 2px solid black;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: large;
 }
 
 @keyframes App-logo-spin {
