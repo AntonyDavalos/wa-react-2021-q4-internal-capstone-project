@@ -6,7 +6,6 @@ import BannerComponent from "./BannerComponent";
 const HomeSlider = ({ banners }) => {
   const [current, setCurrent] = useState(0);
   const length = banners.length;
-
   const nextSlide = () => {
     setCurrent(current === length - 1 ? 0 : current + 1);
   };

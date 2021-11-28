@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Product from "./Product";
-import Sidebar from "./Sidebar";
-import Paging from "./Paging";
+import Product from "../components/Product";
+import Sidebar from "../components/Sidebar";
+import Paging from "../components/Paging";
 
 const AllProducts = ({ products, categories }) => {
   const [sidebarCategories, setItems] = useState(categories);

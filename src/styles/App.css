@@ -23,30 +23,32 @@
   color: white;
 }
 
-.Title{
+.Title {
   float: left;
   margin-left: 20px;
   margin-top: 10px;
   cursor: pointer;
+  color: white;
+  text-decoration: none;
 }
 
-.Logo{
+.Logo {
   margin-right: 10px;
 }
 
-.Shopping-options{
-  float:right;
+.Shopping-options {
+  float: right;
   margin-right: 20px;
   margin-top: 15px;
 }
 
-.Shopping-cart{
+.Shopping-cart {
   margin-right: 10px;
 }
 
-.Search-input{
+.Search-input {
   vertical-align: top;
-    margin-top: 7px;
+  margin-top: 7px;
 }
 
 .App-link {
@@ -70,7 +72,7 @@
   padding-top: 15px;
 }
 
-.See-more-button{
+.See-more-button {
   margin-top: 2%;
   background-color: #004aff;
   border: 2px solid black;

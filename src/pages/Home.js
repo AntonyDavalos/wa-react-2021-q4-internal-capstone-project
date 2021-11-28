@@ -1,11 +1,12 @@
-import React from "react"
+import React from "react";
 
 //Called Components
 import HomeSliderComponent from "../components/HomeSlider";
 import HomeCategoriesComponent from "../components/HomeCategories";
 import FeaturedProductsComponent from "../components/FeaturedProducts";
+import { NavLink } from "react-router-dom";
 
-const Home = ({ banners, featuredProducts, categories, onClickEvent }) => {
+const Home = ({ banners, featuredProducts, categories}) => {
   return (
     <div className="Home">
       <div className="featuredSlider">
@@ -15,10 +16,15 @@ const Home = ({ banners, featuredProducts, categories, onClickEvent }) => {
         <HomeCategoriesComponent categories={categories} />
       </div>
       <div className="Products">
-        <FeaturedProductsComponent products={featuredProducts} categories={categories} />
-        <button className="See-more-button" onClick={onClickEvent}>
-          View all products
-        </button>
+        <FeaturedProductsComponent
+          products={featuredProducts}
+          categories={categories}
+        />
+        <NavLink to="/all-products">
+          <button className="See-more-button">
+            View all products
+          </button>
+        </NavLink>
       </div>
     </div>
   );
