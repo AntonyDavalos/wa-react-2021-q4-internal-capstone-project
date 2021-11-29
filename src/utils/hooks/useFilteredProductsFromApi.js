@@ -5,7 +5,7 @@ import { useLatestAPI } from "./useLatestAPI";
 export function useFilteredProductsFromApi(query, page) {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [filteredProductsData, setFilteredProducts] = useState(() => ({
-    filteredProductsData: [],
+    filteredProductsData: {},
     filteredProductsAreLoading: true,
   }));
 
@@ -19,7 +19,7 @@ export function useFilteredProductsFromApi(query, page) {
     async function getFilteredProducts() {
       try {
         setFilteredProducts({
-          filteredProductsData: [],
+          filteredProductsData: {},
           filteredProductsAreLoading: true,
         });
 
@@ -73,19 +73,15 @@ export function useFilteredProductsFromApi(query, page) {
           };
         });
 
-        console.log(jsonResult);
-
-        jsonResult.data = data;
-
-        console.log(jsonResult);
+        jsonResult.results = data;
 
         setFilteredProducts({
-          filteredProductsData: data,
+          filteredProductsData: jsonResult,
           filteredProductsAreLoading: false,
         });
       } catch (err) {
         setFilteredProducts({
-          filteredProductsData: [],
+          filteredProductsData: {},
           filteredProductsAreLoading: false,
         });
         console.error(err);

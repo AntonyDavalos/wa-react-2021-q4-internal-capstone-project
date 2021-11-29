@@ -19,15 +19,15 @@ const AllProducts = () => {
   const { filteredProductsData, filteredProductsAreLoading } =
     useFilteredProductsFromApi(query.get("category"), query.get("page"));
   const [sidebarCategories, setItems] = useState(categories);
-  const [products, setProducts] = useState(filteredProductsData);
+  const [products, setProducts] = useState(filteredProductsData.results);
 
   useEffect(() => {
     setItems(categories);
   }, [categories]);
 
   useEffect(() => {
-    setProducts(filteredProductsData);
-  }, [filteredProductsData]);
+    setProducts(filteredProductsData.results);
+    }, [filteredProductsData]);
 
   if (categoriesAreLoading || filteredProductsAreLoading) {
     return <h1>Loading...</h1>;
@@ -36,7 +36,7 @@ const AllProducts = () => {
   return (
     <div>
       <Sidebar categories={sidebarCategories} query={query.get("category")} />
-      {products.map((product) => {
+      {products && products.map((product) => {
         const category = sidebarCategories.find(
           (category) => category.id === product.categoryId
         ).name;
@@ -46,7 +46,7 @@ const AllProducts = () => {
           </div>
         );
       })}
-      <Paging />
+      {filteredProductsData &&<Paging page={filteredProductsData.page} pages={filteredProductsData.total_pages} query={query}/>}
     </div>
   );
 };
