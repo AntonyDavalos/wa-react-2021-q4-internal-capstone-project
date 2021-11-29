@@ -39,7 +39,7 @@ const getPages = (pages, selected, location) => {
     );
   }
 
-  if (selected + 3 < pages) {
+  if (selected + 2 < pages) {
     content.push(
       <span className="Paging-element" key={"dotdotdot after"}>
         ...
@@ -63,10 +63,8 @@ const Paging = ({ page, pages, query }) => {
   let url = location.pathname;
   
   if(location.search){
-    url = location.search.replace(`&page=${query.get("page")}`,"")
-    console.log(url);
+    url = location.search.replace(`&page=${query.get("page")}`,"");
   }else{
-    console.log("No tengo search");
     url = url + "?";
   }
 
