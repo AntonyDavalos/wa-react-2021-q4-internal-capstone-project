@@ -20,7 +20,7 @@ const Home = ({ banners, featuredProducts, categories}) => {
           products={featuredProducts}
           categories={categories}
         />
-        <NavLink to="/all-products">
+        <NavLink to="/products">
           <button className="See-more-button">
             View all products
           </button>

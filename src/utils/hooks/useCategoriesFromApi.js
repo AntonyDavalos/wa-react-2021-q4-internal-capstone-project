@@ -33,12 +33,12 @@ export function useCategoriesFromApi() {
         const data = jsonResult.results.map((category) => {
           return {
             name: category.data.name,
+            slug: category.slugs[0],
             id: category.id,
             url: category.data.main_image.url,
             selected: false,
           };
         });
-
         setFeaturedCategories({ categories: data, categoriesAreLoading: false });
       } catch (err) {
         setFeaturedCategories({ categories: [], categoriesAreLoading: false });

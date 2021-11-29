@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 
 import "./styles/App.css";
 import "./styles/HomeSlider.css";
@@ -7,7 +7,7 @@ import "./styles/HomeCategories.css";
 import "./styles/BannerComponent.css";
 import "./styles/Sidebar.css";
 import "./styles/Paging.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 //Pages
 // "/Home" and "/"
@@ -28,8 +28,9 @@ function App() {
   const { banners, bannersAreLoading } = useFeaturedBanners();
   const { categories, categoriesAreLoading } = useCategoriesFromApi();
   const { featuredProducts, featuredProductsAreLoading } = useFeaturedProductsFromApi();
-  //console.log(featuredProducts, featuredProductsAreLoading);
-  // console.log(CategoriesArray);
+  if (bannersAreLoading || categoriesAreLoading || featuredProductsAreLoading) {
+    return <h1>Loading...</h1>;
+  }
   return (
     <div className="App">
       <BrowserRouter>
@@ -49,15 +50,15 @@ function App() {
                 }
               ></Route>
             ))}
-            <Route
-              path="/all-products"
-              element={
-                <AllProducts
-                  products={featuredProducts}
-                  categories={categories}
-                />
-              }
-            ></Route>
+            {["/products", "/products?category={categorySlug}", "/products?page="].map((path, index) => (
+              <Route
+                key={path + index}
+                path={path}
+                element={
+                  <AllProducts/>
+                }
+              ></Route>
+            ))}
           </Routes>
         </div>
         <Footer />

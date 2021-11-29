@@ -16,6 +16,8 @@
   border-bottom: 2px solid black;
   padding-top: 5px;
   padding-bottom: 5px;
+  color: white;
+  text-decoration: none;
 }
 
 .Selected-sidebar-element {
@@ -26,4 +28,6 @@
   background: #004aff;
   padding-top: 5px;
   padding-bottom: 5px;
+  color: white;
+  text-decoration: none;
 }

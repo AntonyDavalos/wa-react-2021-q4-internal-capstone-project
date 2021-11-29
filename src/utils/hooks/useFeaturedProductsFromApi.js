@@ -4,7 +4,7 @@ import { useLatestAPI } from "./useLatestAPI";
 
 export function useFeaturedProductsFromApi() {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
-  const [featuredProducts, setFeaturedfeaturedProducts] = useState(() => ({
+  const [featuredProducts, setFeaturedProducts] = useState(() => ({
     featuredProducts: [],
     featuredProductsAreLoading: true,
   }));
@@ -18,7 +18,7 @@ export function useFeaturedProductsFromApi() {
 
     async function getFeaturedCategories() {
       try {
-        setFeaturedfeaturedProducts({
+        setFeaturedProducts({
           featuredProducts: [],
           featuredProductsAreLoading: true,
         });
@@ -46,12 +46,12 @@ export function useFeaturedProductsFromApi() {
           };
         });
 
-        setFeaturedfeaturedProducts({
+        setFeaturedProducts({
           featuredProducts: data,
           featuredProductsAreLoading: false,
         });
       } catch (err) {
-        setFeaturedfeaturedProducts({
+        setFeaturedProducts({
           featuredProducts: [],
           featuredProductsAreLoading: false,
         });
