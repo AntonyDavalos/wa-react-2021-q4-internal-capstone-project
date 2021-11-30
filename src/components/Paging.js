@@ -32,9 +32,7 @@ const getPages = (pages, selected, location) => {
   ) {
     content.push(
       <a href={`${location}&page=${after}`} key={"page " + after}>
-        <span className="Paging-element">
-          {after}
-        </span>
+        <span className="Paging-element">{after}</span>
       </a>
     );
   }
@@ -61,14 +59,12 @@ const getPages = (pages, selected, location) => {
 const Paging = ({ page, pages, query }) => {
   const location = useLocation();
   let url = location.pathname;
-  
-  if(location.search){
-    url = location.search.replace(`&page=${query.get("page")}`,"");
-  }else{
+
+  if (location.search) {
+    url = location.search.replace(`&page=${query.get("page")}`, "");
+  } else {
     url = url + "?";
   }
-
-  console.log(location);
 
   return (
     <div className="Paging">
