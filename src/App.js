@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 
 import "./styles/App.css";
 import "./styles/HomeSlider.css";
@@ -7,114 +7,97 @@ import "./styles/HomeCategories.css";
 import "./styles/BannerComponent.css";
 import "./styles/Sidebar.css";
 import "./styles/Paging.css";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useFeaturedBanners } from "./utils/hooks/useFeaturedBanners";
+import "./styles/ProductPage.css";
 
-// import Home from "./pages/Home";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-//JSON data
-import Categories from "./mocks/en-us/product-categories.json";
-import Products from "./mocks/en-us/products.json";
-import FeaturedProducts from "./mocks/en-us/featured-products.json";
-import Banners from "./mocks/en-us/featured-banners.json";
+//Pages
+// "/Home" and "/"
+import AllProducts from "./pages/AllProducts";
+// "/all-products"
+import Home from "./pages/Home";
+// "/product"
+import Product from "./pages/ProductPage";
+// "/search?q={searchTerm}"
+import Search from "./pages/Search";
 
 //Components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import AllProducts from "./components/AllProducts";
-import Home from "./pages/Home";
 
-// Transform Banners to Array Of Banners
-const BannersArray = [];
+//Hooks
+import { useFeaturedBanners } from "./utils/hooks/useFeaturedBanners";
+import { useCategoriesFromApi } from "./utils/hooks/useCategoriesFromApi";
+import { useFeaturedProductsFromApi } from "./utils/hooks/useFeaturedProductsFromApi";
 
-for (var bannerCounter in Banners.results) {
-  var banner = Banners.results[bannerCounter];
+// Import Swiper styles
+import "swiper/swiper-bundle.min.css"
+import "swiper/swiper.min.css";
 
-  BannersArray.push({
-    title: banner.data.title,
-    description: banner.data.description[0].text,
-    image: banner.data.main_image.url,
-  });
-}
+// import Swiper core and required modules
+import SwiperCore, { FreeMode, Navigation, Thumbs } from "swiper";
 
-const CategoriesArray = [];
+// install Swiper modules
+SwiperCore.use([FreeMode, Navigation, Thumbs]);
 
-  for (var categoriesCounter in Categories.results) {
-    var category = Categories.results[categoriesCounter];
-
-    CategoriesArray.push({
-      name: category.data.name,
-      id: category.id,
-      url: category.data.main_image.url,
-      selected: false
-    });
-  }
-
-  const FeaturedProductsArray = [];
-
-  for (var featuredProductCounter in FeaturedProducts.results) {
-    var featuredProduct = FeaturedProducts.results[featuredProductCounter];
-
-    FeaturedProductsArray.push({
-      id: featuredProduct.id,
-      name: featuredProduct.data.name,
-      url: featuredProduct.data.mainimage.url,
-      price: featuredProduct.data.price,
-      categoryId: featuredProduct.data.category.id
-    });
-  }
-
-  const ProductsArray = [];
-
-  for (var productCounter in Products.results) {
-    var product = Products.results[productCounter];
-
-    ProductsArray.push({
-      id: product.id,
-      name: product.data.name,
-      url: product.data.mainimage.url,
-      price: product.data.price,
-      categoryId: product.data.category.id
-    });
-  }
-  
 function App() {
-  const [showHome, setHomeShow] = useState(true);
-  const [showProducts, setProductsShow] = useState(false);
-  const { data, isLoading } = useFeaturedBanners();
-  console.log(data, isLoading);
-
-  const changeToHomePage = () => {
-    setHomeShow(true);
-    setProductsShow(false);
-  };
-
-  const changeToProductsPage = () => {
-    setHomeShow(false);
-    setProductsShow(true);
-  };
+  const { banners, bannersAreLoading } = useFeaturedBanners();
+  const { categories, categoriesAreLoading } = useCategoriesFromApi();
+  const { featuredProducts, featuredProductsAreLoading } =
+    useFeaturedProductsFromApi();
+  if (bannersAreLoading || categoriesAreLoading || featuredProductsAreLoading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <div className="App">
-      <Header event={changeToHomePage} />
-      <div className="Body">
-        {showHome && <Home banners={BannersArray} featuredProducts={FeaturedProductsArray} categories={CategoriesArray} onClickEvent={changeToProductsPage} />}
-        {showProducts && <AllProducts products={ProductsArray} categories={CategoriesArray}/>}
-      </div>
-      <Footer />
+      <BrowserRouter>
+        <Header />
+        <div className="Body">
+          <Routes>
+            {["/home", "/"].map((path, index) => (
+              <Route
+                key={path + index}
+                path={path}
+                element={
+                  <Home
+                    banners={banners}
+                    featuredProducts={featuredProducts}
+                    categories={categories}
+                  />
+                }
+              ></Route>
+            ))}
+            {[
+              "/products",
+              "/products?category={categorySlug}",
+              "/products?page=",
+            ].map((path, index) => (
+              <Route
+                key={path + index}
+                path={path}
+                element={<AllProducts />}
+              ></Route>
+            ))}
+            {["/product/:id"].map((path, index) => (
+              <Route
+                key={path + index}
+                path={path}
+                element={<Product />}
+              ></Route>
+            ))}
+            {["/search"].map((path, index) => (
+              <Route
+                key={path + index}
+                path={path}
+                element={<Search />}
+              ></Route>
+            ))}
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
     </div>
-
-    // <div className="App">
-    //   <BrowserRouter>
-    //     <header className="App-header">
-    //     </header>
-    //     <body>
-    //       <Routes>
-    //         <Route path="/" element={<Home />}></Route>
-    //       </Routes>
-    //     </body>
-    //   </BrowserRouter>
-    // </div>
   );
 }
 

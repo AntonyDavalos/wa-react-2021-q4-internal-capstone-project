@@ -39,30 +39,30 @@ const HomeCategories = ({ categories }) => {
           onClick={previous}
           size={20}
         />
-        <div className="Category">
+        <a href={`/products?category={${categories[previousCategory].slug}}`} className="Category">
           <img
             src={categories[previousCategory].url}
             alt={"category " + (previousCategory + 1)}
             className="Category-image"
             title={categories[previousCategory].name}
           />
-        </div>
-        <div className="Category">
+        </a>
+        <a href={`/products?category={${categories[currentCategory].slug}}`} className="Category">
           <img
             src={categories[currentCategory].url}
             alt={"category " + (currentCategory + 1)}
             className="Category-image"
             title={categories[currentCategory].name}
           />
-        </div>
-        <div className="Category">
+        </a>
+        <a href={`/products?category={${categories[nextCategory].slug}}`} className="Category">
           <img
             src={categories[nextCategory].url}
             alt={"category " + (nextCategory + 1)}
             className="Category-image"
             title={categories[nextCategory].name}
           />
-        </div>
+        </a>
         <FaArrowAltCircleRight
           className="Right-arrow"
           onClick={next}

@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { API_BASE_URL } from '../constants';
-import { useLatestAPI } from './useLatestAPI';
+import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../constants";
+import { useLatestAPI } from "./useLatestAPI";
 
 export function useFeaturedBanners() {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [featuredBanners, setFeaturedBanners] = useState(() => ({
-    data: {},
-    isLoading: true,
+    banners: [],
+    bannersAreLoading: true,
   }));
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function useFeaturedBanners() {
 
     async function getFeaturedBanners() {
       try {
-        setFeaturedBanners({ data: {}, isLoading: true });
+        setFeaturedBanners({ banners: [], bannersAreLoading: true });
 
         const response = await fetch(
           `${API_BASE_URL}/documents/search?ref=${apiRef}&q=${encodeURIComponent(
@@ -28,11 +28,19 @@ export function useFeaturedBanners() {
             signal: controller.signal,
           }
         );
-        const data = await response.json();
+        let jsonResult = await response.json(); 
 
-        setFeaturedBanners({ data, isLoading: false });
+        const data = jsonResult.results.map((banner) => {
+          return {
+            title: banner.data.title,
+            description: banner.data.description[0].text,
+            image: banner.data.main_image.url,
+          };
+        });
+
+        setFeaturedBanners({ banners: data, bannersAreLoading: false });
       } catch (err) {
-        setFeaturedBanners({ data: {}, isLoading: false });
+        setFeaturedBanners({ banners: [], bannersAreLoading: false });
         console.error(err);
       }
     }

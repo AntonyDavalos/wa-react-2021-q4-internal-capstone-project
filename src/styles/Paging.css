@@ -12,6 +12,7 @@
     padding-right: 5px;
     margin-left: 2px;
     margin-right: 2px;
+    text-decoration: none;
 }
 
 .Paging-element-active{
@@ -25,4 +26,5 @@
     padding-right: 5px;
     margin-left: 2px;
     margin-right: 2px;
+    text-decoration: none;
 }
