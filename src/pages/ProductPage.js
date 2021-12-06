@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Swiper } from "swiper/react/swiper";
@@ -9,6 +9,12 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useProductFromApi } from "../utils/hooks/useProductFromApi";
 import { useCategoriesFromApi } from "../utils/hooks/useCategoriesFromApi";
 
+//Context
+import CartContext from "../state/CartContext";
+
+//CSS
+import "../styles/ProductPage.css";
+
 const ProductPage = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const { productData, productIsLoading } = useProductFromApi(
@@ -18,6 +24,7 @@ const ProductPage = () => {
   const { categories, categoriesAreLoading } = useCategoriesFromApi();
   const [categoriesList, setItems] = useState(categories);
   const [productCategory, setCategory] = useState({});
+  const { productsOnCart, setProductsOnCart } = useContext(CartContext);
 
   useEffect(() => {
     if (productData.results) {
@@ -31,6 +38,33 @@ const ProductPage = () => {
       categoriesList.find((category) => category.id === product.categoryId)
     );
   }, [categories, categoriesList, product]);
+
+  const AddToCart = () => {
+    let itemQuantity = Number(document.getElementsByName("itemQuantity")[0].value);
+
+    let updatedCart = productsOnCart.map((item) => {
+      const newItem = {
+        ...item,
+        quantity: product.id === item.id ? item.quantity + itemQuantity : item.quantity,
+      };
+
+      return newItem;
+    });
+
+    if (updatedCart.length === 0 || updatedCart.filter((cartItem) => cartItem.id === product.id).length === 0) {
+      updatedCart.push({
+        id: product.id,
+        name: product.name,
+        url: product.url,
+        price: product.price,
+        quantity: itemQuantity
+      });
+    }
+
+    setProductsOnCart(updatedCart);
+
+    alert("Added "+itemQuantity+" to the cart");
+  };
 
   if (productIsLoading || categoriesAreLoading) {
     return <h1>Loading...</h1>;
@@ -101,11 +135,11 @@ const ProductPage = () => {
         </div>
         <div className="Buy-options">
           <h3>Comprar</h3>
-          <span className="Add-to-cart Product-view">
+          <span className="Add-to-cart Product-view" onClick={AddToCart}>
             <FaShoppingCart />
           </span>
           <span>Cantidad:</span>
-          <select className="Select-input">
+          <select className="Select-input" name="itemQuantity">
             <option>1</option>
             <option>2</option>
             <option>3</option>

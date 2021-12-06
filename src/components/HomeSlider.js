@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+//CSS
+import "../styles/HomeSlider.css";
+
 //Components
 import BannerComponent from "./BannerComponent";
 

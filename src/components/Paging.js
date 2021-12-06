@@ -1,6 +1,9 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
+//CSS
+import "../styles/Paging.css";
+
 const getPages = (pages, selected, location) => {
   let content = [];
 

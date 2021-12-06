@@ -1,5 +1,8 @@
 import React from "react";
 
+//CSS
+import "../styles/Sidebar.css";
+
 const Sidebar = ({ categories, query }) => {
   let originalFilters = [];
   if (query) {

@@ -73,8 +73,6 @@ export function useFilteredProductsFromApi(query, page) {
           };
         });
 
-        console.log(data);
-
         jsonResult.results = data;
 
         setFilteredProducts({

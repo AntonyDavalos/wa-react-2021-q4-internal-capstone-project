@@ -1,0 +1,9 @@
+.On-cart{
+    background-color: white;
+    color: black;
+    margin-right: 20px;
+    padding-right: 15px;
+    padding-left: 5px;
+    border-radius: 10px;
+    font-size: calc(5px + 2vmin);
+}

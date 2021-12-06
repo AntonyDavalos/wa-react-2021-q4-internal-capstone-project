@@ -13,47 +13,9 @@
   }
 }
 
-.App-header {
-  background-image: linear-gradient(to right, #0a0aaf, #004aff);
-  min-height: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.Title {
-  float: left;
-  margin-left: 20px;
-  margin-top: 10px;
-  cursor: pointer;
-  color: white;
-  text-decoration: none;
-}
-
 .Normilize-link-color{
   color: white;
   text-decoration: none;
-}
-
-.Logo {
-  margin-right: 10px;
-}
-
-.Shopping-options {
-  float: right;
-  margin-right: 20px;
-  margin-top: 15px;
-}
-
-.Shopping-cart {
-  margin-right: 10px;
-}
-
-.Search-input {
-  vertical-align: top;
-  margin-top: 7px;
 }
 
 .App-link {

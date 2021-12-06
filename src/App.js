@@ -1,15 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./styles/App.css";
-import "./styles/HomeSlider.css";
-import "./styles/Product.css";
-import "./styles/HomeCategories.css";
-import "./styles/BannerComponent.css";
-import "./styles/Sidebar.css";
-import "./styles/Paging.css";
-import "./styles/ProductPage.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CartContext from "./state/CartContext";
 
 //Pages
 // "/Home" and "/"
@@ -20,6 +14,10 @@ import Home from "./pages/Home";
 import Product from "./pages/ProductPage";
 // "/search?q={searchTerm}"
 import Search from "./pages/Search";
+// "/cart"
+import Cart from "./pages/CartPage";
+// "/checkout"
+import Checkout from "./pages/CheckoutPage";
 
 //Components
 import Header from "./components/Header";
@@ -31,7 +29,7 @@ import { useCategoriesFromApi } from "./utils/hooks/useCategoriesFromApi";
 import { useFeaturedProductsFromApi } from "./utils/hooks/useFeaturedProductsFromApi";
 
 // Import Swiper styles
-import "swiper/swiper-bundle.min.css"
+import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
 
 // import Swiper core and required modules
@@ -43,8 +41,21 @@ SwiperCore.use([FreeMode, Navigation, Thumbs]);
 function App() {
   const { banners, bannersAreLoading } = useFeaturedBanners();
   const { categories, categoriesAreLoading } = useCategoriesFromApi();
+  const [productsOnCart, setProductsOnCart] = useState([]);
   const { featuredProducts, featuredProductsAreLoading } =
     useFeaturedProductsFromApi();
+
+  React.useEffect(() => {
+    const data = localStorage.getItem("my-cart");
+    if (data) {
+      setProductsOnCart(JSON.parse(data));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("my-cart", JSON.stringify(productsOnCart));
+  });
+
   if (bannersAreLoading || categoriesAreLoading || featuredProductsAreLoading) {
     return <h1>Loading...</h1>;
   }
@@ -52,50 +63,42 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
-        <div className="Body">
-          <Routes>
-            {["/home", "/"].map((path, index) => (
-              <Route
-                key={path + index}
-                path={path}
-                element={
-                  <Home
-                    banners={banners}
-                    featuredProducts={featuredProducts}
-                    categories={categories}
-                  />
-                }
-              ></Route>
-            ))}
-            {[
-              "/products",
-              "/products?category={categorySlug}",
-              "/products?page=",
-            ].map((path, index) => (
-              <Route
-                key={path + index}
-                path={path}
-                element={<AllProducts />}
-              ></Route>
-            ))}
-            {["/product/:id"].map((path, index) => (
-              <Route
-                key={path + index}
-                path={path}
-                element={<Product />}
-              ></Route>
-            ))}
-            {["/search"].map((path, index) => (
-              <Route
-                key={path + index}
-                path={path}
-                element={<Search />}
-              ></Route>
-            ))}
-          </Routes>
-        </div>
-        <Footer />
+        <CartContext.Provider value={{ productsOnCart, setProductsOnCart }}>
+          <Header />
+          <div className="Body">
+            <Routes>
+              {["/home", "/"].map((path, index) => (
+                <Route
+                  key={path + index}
+                  path={path}
+                  element={
+                    <Home
+                      banners={banners}
+                      featuredProducts={featuredProducts}
+                      categories={categories}
+                    />
+                  }
+                ></Route>
+              ))}
+              {[
+                "/products",
+                "/products?category={categorySlug}",
+                "/products?page=",
+              ].map((path, index) => (
+                <Route
+                  key={path + index}
+                  path={path}
+                  element={<AllProducts />}
+                ></Route>
+              ))}
+              <Route path="/product/:id" element={<Product />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+            </Routes>
+          </div>
+          <Footer />
+        </CartContext.Provider>
       </BrowserRouter>
     </div>
   );

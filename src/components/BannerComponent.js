@@ -1,5 +1,8 @@
 import React from "react";
 
+//CSS
+import "../styles/BannerComponent.css";
+
 const BannerComponent = ({ banner, index }) => {
     return(
         <div>
