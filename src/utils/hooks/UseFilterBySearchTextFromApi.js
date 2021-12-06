@@ -44,6 +44,7 @@ export function useFilterBySearchTextFromApi(query, page) {
             url: product.data.mainimage.url,
             price: product.data.price,
             categoryId: product.data.category.id,
+            stock: product.data.stock
           };
         });
 

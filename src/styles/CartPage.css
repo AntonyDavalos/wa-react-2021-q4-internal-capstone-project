@@ -1,0 +1,8 @@
+.Go-to-checkout-button{
+    text-decoration: none;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: yellow;
+    color: black;
+}

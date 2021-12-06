@@ -22,13 +22,18 @@ const CartProduct = ({ product }) => {
     let updatedCart = productsOnCart.map((item) => {
       const newItem = {
         ...item,
-        quantity: product.id === item.id ? Number(event.target.value) : item.quantity,
+        quantity: product.id === item.id && Number(event.target.value) <= product.stock ? Number(event.target.value) : item.quantity,
       };
 
       return newItem;
     });
 
-    setProductsOnCart(updatedCart);
+    if(product.stock < Number(event.target.value)){
+        alert("Cant update product max in stock: "+product.stock);
+    }else{
+        setProductsOnCart(updatedCart);
+    }
+
   };
 
   return (

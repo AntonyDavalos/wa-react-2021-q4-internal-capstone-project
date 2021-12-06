@@ -20,18 +20,26 @@ const Product = ({ product, category }) => {
       return newItem;
     });
 
-    if (updatedCart.length === 0 || updatedCart.filter((cartItem) => cartItem.id === product.id).length === 0) {
+    var foundItem = updatedCart.find((cartItem) => cartItem.id === product.id);
+
+    if (!foundItem) {
       updatedCart.push({
         id: product.id,
         name: product.name,
         url: product.url,
         price: product.price,
-        quantity: 1,
+        stock: product.stock,
+        quantity: 1
       });
     }
 
-    setProductsOnCart(updatedCart);
-    alert("Added 1 to cart.");
+    if(foundItem && foundItem.quantity > foundItem.stock){
+      alert("Cant add product max in stock: "+foundItem.stock);
+    }else{
+      setProductsOnCart(updatedCart);
+      alert("Added 1 to cart.");
+    }
+
   };
 
   return (
