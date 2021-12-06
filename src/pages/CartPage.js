@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
 
 //Cart Product component
 import CartProduct from "../components/CartProduct";
@@ -7,7 +8,7 @@ import CartProduct from "../components/CartProduct";
 import CartContext from "../state/CartContext";
 
 const CartPage = () => {
-  const { productsOnCart, setProductsOnCart } = useContext(CartContext);
+  const { productsOnCart } = useContext(CartContext);
 
     if(productsOnCart.length === 0){
         return(
@@ -24,7 +25,8 @@ const CartPage = () => {
               </div>
           );
       })}
-      <h3>Amount to pay  ${productsOnCart && productsOnCart.length > 0 ? productsOnCart.reduce((n, {quantity, price}) => n + (quantity * price), 0): "0"}</h3>
+      <h3>Amount to pay  ${productsOnCart && productsOnCart.length > 0 ? productsOnCart.reduce((n, {quantity, price}) => n + (quantity * price), 0).toFixed(2): "0"}</h3>
+      <NavLink to="/checkout">Go to checkout</NavLink>
     </div>
   );
 };

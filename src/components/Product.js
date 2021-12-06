@@ -31,6 +31,7 @@ const Product = ({ product, category }) => {
     }
 
     setProductsOnCart(updatedCart);
+    alert("Added 1 to cart.");
   };
 
   return (
@@ -41,7 +42,7 @@ const Product = ({ product, category }) => {
           <a href={`/product/${product.id}`} className="Normilize-link-color">
             <div className="Product-category">{category}</div>
             <div className="Product-name">{product.name}</div>
-            <div className="Product-price">Price $ {product.price}</div>
+            <div className="Product-price">Price $ {product.price.toFixed(2)}</div>
           </a>
           <div className="Add-to-cart" onClick={AddToCart}>
             <FaShoppingCart /> Add to cart
