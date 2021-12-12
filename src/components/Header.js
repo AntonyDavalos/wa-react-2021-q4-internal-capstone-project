@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import logo from "../Logo.png";
 import { NavLink } from "react-router-dom";
+
+//CSS
+import "../styles/Header.css";
+
+//Components
+import OnCart from "./OnCartComponent";
 
 const Header = () => {
   const [url, changeUrl] = useState("");
@@ -18,8 +24,11 @@ const Header = () => {
           Muebleria Xtrema
         </NavLink>
         <span className="Shopping-options">
+          <NavLink to="/cart" className="Normilize-link-color">
+            <OnCart />
+          </NavLink>
           <a href={`/search?q=${url}`} className="Normilize-link-color">
-            <FaShoppingCart className="Shopping-cart" />
+            <FaSearch className="Shopping-cart" size={20}/>
           </a>
           <input placeholder="Search" className="Search-input" onChange={handleChange}></input>
         </span>

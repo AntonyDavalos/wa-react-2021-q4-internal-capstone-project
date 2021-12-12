@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 
+//CSS
+import "../styles/HomeCategories.css";
+
 const HomeCategories = ({ categories }) => {
   const [previousCategory, setPreviousCategory] = useState(0);
   const [currentCategory, setCurrentCategory] = useState(1);

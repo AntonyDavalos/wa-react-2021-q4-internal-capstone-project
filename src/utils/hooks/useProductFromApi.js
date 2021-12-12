@@ -40,7 +40,8 @@ export function useProductFromApi(productId) {
             tags: product.tags,
             flavourText: product.data.short_description,
             specs: product.data.specs,
-            gallery: product.data.images
+            gallery: product.data.images,
+            stock: product.data.stock
           };
         });
 

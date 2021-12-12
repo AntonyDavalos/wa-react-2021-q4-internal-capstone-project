@@ -70,10 +70,9 @@ export function useFilteredProductsFromApi(query, page) {
             url: product.data.mainimage.url,
             price: product.data.price,
             categoryId: product.data.category.id,
+            stock: product.data.stock
           };
         });
-
-        console.log(data);
 
         jsonResult.results = data;
 
