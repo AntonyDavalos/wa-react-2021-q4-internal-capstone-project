@@ -44,6 +44,7 @@ function App() {
   const [productsOnCart, setProductsOnCart] = useState([]);
   const { featuredProducts, featuredProductsAreLoading } =
     useFeaturedProductsFromApi();
+  const cartContextProvider = { productsOnCart, setProductsOnCart };
 
   React.useEffect(() => {
     const data = localStorage.getItem("my-cart");
@@ -63,7 +64,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <CartContext.Provider value={{ productsOnCart, setProductsOnCart }}>
+        <CartContext.Provider value={cartContextProvider}>
           <Header />
           <div className="Body">
             <Routes>

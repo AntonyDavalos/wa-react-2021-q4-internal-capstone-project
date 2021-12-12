@@ -11,7 +11,7 @@ const OnCartComponent = () => {
   return (
     <span className="On-cart">
       <FaShoppingCart className="Shopping-cart" size={20} />
-      <span>{productsOnCart && productsOnCart.length > 0 ? productsOnCart.reduce((n, {quantity}) => n + quantity, 0): "0"}</span>
+      <span>{productsOnCart.reduce((n, {quantity}) => n + quantity, 0)}</span>
     </span>
   );
 };

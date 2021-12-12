@@ -25,6 +25,7 @@ const ProductPage = () => {
   const [categoriesList, setItems] = useState(categories);
   const [productCategory, setCategory] = useState({});
   const { productsOnCart, setProductsOnCart } = useContext(CartContext);
+  const [productQuantity, setProductQuantity] = useState(0);
 
   useEffect(() => {
     if (productData.results) {
@@ -40,12 +41,13 @@ const ProductPage = () => {
   }, [categories, categoriesList, product]);
 
   const AddToCart = () => {
-    let itemQuantity = Number(document.getElementsByName("itemQuantity")[0].value);
+    let itemQuantity = productQuantity;
 
     let updatedCart = productsOnCart.map((item) => {
       const newItem = {
         ...item,
-        quantity: product.id === item.id ? item.quantity + itemQuantity : item.quantity,
+        quantity:
+          product.id === item.id ? item.quantity + itemQuantity : item.quantity,
       };
 
       return newItem;
@@ -60,16 +62,21 @@ const ProductPage = () => {
         url: product.url,
         price: product.price,
         stock: product.stock,
-        quantity: itemQuantity
+        quantity: itemQuantity,
       });
     }
 
-    if(foundItem && foundItem.quantity > foundItem.stock){
-      alert("Cant add product max in stock: "+foundItem.stock);
-    }else{
+    if (foundItem && foundItem.quantity > foundItem.stock) {
+      alert("Cant add product max in stock: " + foundItem.stock);
+    } else {
       setProductsOnCart(updatedCart);
-      alert("Added "+itemQuantity+" to the cart");
+      alert("Added " + itemQuantity + " to the cart");
     }
+  };
+
+  const UpdateProduct = (event) => 
+  {
+    setProductQuantity(Number(event.target.value));
   };
 
   if (productIsLoading || categoriesAreLoading) {
@@ -82,84 +89,85 @@ const ProductPage = () => {
 
   return (
     <div>
-      {product && product.gallery && <div>
-        <h1>{product.name}</h1>
-      <div className="Product-shown">
-        <Swiper
-          style={{
-            "--swiper-navigation-color": "#fff",
-            "--swiper-pagination-color": "#fff",
-          }}
-          loop={true}
-          spaceBetween={10}
-          navigation={true}
-          thumbs={{ swiper: thumbsSwiper }}
-          className="mySwiper2"
-        >
-          {product.gallery.map((item) => {
-            return (
-              <SwiperSlide key={`Main-${item.image.url}`}>
-                <img src={item.image.url} alt={item.image.alt} />
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
-        <Swiper
-          onSwiper={setThumbsSwiper}
-          loop={true}
-          spaceBetween={10}
-          slidesPerView={4}
-          freeMode={true}
-          watchSlidesProgress={true}
-          className="mySwiper"
-        >
-          {product.gallery.map((item) => {
-            return (
-              <SwiperSlide key={`Sidebar-${item.image.url}`}>
-                <img src={item.image.url} alt={item.image.alt} />
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
-      </div>
+      {product && product.gallery && (
+        <div>
+          <h1>{product.name}</h1>
+          <div className="Product-shown">
+            <Swiper
+              style={{
+                "--swiper-navigation-color": "#fff",
+                "--swiper-pagination-color": "#fff",
+              }}
+              loop={true}
+              spaceBetween={10}
+              navigation={true}
+              thumbs={{ swiper: thumbsSwiper }}
+              className="mySwiper2"
+            >
+              {product.gallery.map((item) => {
+                return (
+                  <SwiperSlide key={`Main-${item.image.url}`}>
+                    <img src={item.image.url} alt={item.image.alt} />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              loop={true}
+              spaceBetween={10}
+              slidesPerView={4}
+              freeMode={true}
+              watchSlidesProgress={true}
+              className="mySwiper"
+            >
+              {product.gallery.map((item) => {
+                return (
+                  <SwiperSlide key={`Sidebar-${item.image.url}`}>
+                    <img src={item.image.url} alt={item.image.alt} />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
 
-      <div className="Detail-card">
-        <div>Price: ${product.price}</div>
-        <div>SKU: {product.sku}</div>
-        <div>Category: {productCategory && `${productCategory.name}`}</div>
-        <div>Tags: {product.tags.join(", ")}</div>
-        <div className="Flavour-text">{product.flavourText}</div>
-        <div>Specs</div>
-        <div className="Spec-container">
-          {product.specs.map((spec) => {
-            return (
-              <div className="Product-spec" key={spec.spec_name}>
-                <span>- {spec.spec_value}</span>
-              </div>
-            );
-          })}
+          <div className="Detail-card">
+            <div>Price: ${product.price}</div>
+            <div>SKU: {product.sku}</div>
+            <div>Category: {productCategory && `${productCategory.name}`}</div>
+            <div>Tags: {product.tags.join(", ")}</div>
+            <div className="Flavour-text">{product.flavourText}</div>
+            <div>Specs</div>
+            <div className="Spec-container">
+              {product.specs.map((spec) => {
+                return (
+                  <div className="Product-spec" key={spec.spec_name}>
+                    <span>- {spec.spec_value}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="Buy-options">
+              <h3>Comprar</h3>
+              <span className="Add-to-cart Product-view" onClick={AddToCart}>
+                <FaShoppingCart />
+              </span>
+              <span>Cantidad:</span>
+              <select className="Select-input" value={productQuantity} onChange={UpdateProduct}>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <div className="Buy-options">
-          <h3>Comprar</h3>
-          <span className="Add-to-cart Product-view" onClick={AddToCart}>
-            <FaShoppingCart />
-          </span>
-          <span>Cantidad:</span>
-          <select className="Select-input" name="itemQuantity">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
-          </select>
-        </div>
-      </div>
-          </div>}
-      
+      )}
     </div>
   );
 };

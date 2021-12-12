@@ -28,6 +28,12 @@ const CartProduct = ({ product }) => {
       return newItem;
     });
 
+    if(event.target.value*1 === 0 ){
+      RemoveFromCart()
+      alert("Removed from cart.");
+      return 
+    }
+
     if(product.stock < Number(event.target.value)){
         alert("Cant update product max in stock: "+product.stock);
     }else{

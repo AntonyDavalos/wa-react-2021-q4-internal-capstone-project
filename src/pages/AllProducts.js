@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Product from "../components/Product";
 import Sidebar from "../components/Sidebar";
-import Paging from "../components/Paging";
+import ProductGrid from "../components/ProductGrid";
 import { useLocation } from "react-router-dom";
 //Hooks
 import { useFilteredProductsFromApi } from "../utils/hooks/useFilteredProductsFromApi";
@@ -36,17 +35,10 @@ const AllProducts = () => {
   return (
     <div>
       <Sidebar categories={sidebarCategories} query={query.get("category")} />
-      {products && products.map((product) => {
-        const category = sidebarCategories.find(
-          (category) => category.id === product.categoryId
-        ).name;
-        return (
-          <div key={product.id}>
-            <Product product={product} category={category} />
-          </div>
-        );
-      })}
-      {filteredProductsData &&<Paging page={filteredProductsData.page} pages={filteredProductsData.total_pages} query={query}/>}
+      {products && !filteredProductsData && 
+      <ProductGrid products={products} categories={sidebarCategories}/>}
+      {products && filteredProductsData && 
+      <ProductGrid products={products} categories={sidebarCategories} showPagination={true} page={filteredProductsData.page} pages={filteredProductsData.total_pages}/>}
     </div>
   );
 };
