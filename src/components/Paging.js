@@ -71,17 +71,21 @@ const Paging = function Paging({ page, pages, query }) {
 
   return (
     <div className="Paging">
-      <a href={`${url}&page=1`}>
-        <span className="Paging-element" key="page-First">
-          &laquo;
-        </span>
-      </a>
+      {page !== 1 && (
+        <a href={`${url}&page=1`}>
+          <span className="Paging-element" key="page-First">
+            &laquo;
+          </span>
+        </a>
+      )}
       {getPages(pages, page, url)}
-      <a href={`${url}&page=${pages}`}>
-        <span className="Paging-element" key="page-Last">
-          &raquo;
-        </span>
-      </a>
+      {page !== pages && (
+        <a href={`${url}&page=${pages}`}>
+          <span className="Paging-element" key="page-Last">
+            &raquo;
+          </span>
+        </a>
+      )}
     </div>
   );
 };
