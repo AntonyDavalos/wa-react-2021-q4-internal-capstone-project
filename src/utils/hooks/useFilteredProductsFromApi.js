@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../constants";
-import { useLatestAPI } from "./useLatestAPI";
+import API_BASE_URL from "../constants";
+import useLatestAPI from "./useLatestAPI";
 
-export function useFilteredProductsFromApi(query, page) {
+export default function useFilteredProductsFromApi(query, page) {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [filteredProductsData, setFilteredProducts] = useState(() => ({
     filteredProductsData: {},
@@ -32,16 +32,14 @@ export function useFilteredProductsFromApi(query, page) {
             signal: controller.signal,
           }
         );
-        let jsonResultCategories = await responseCategories.json();
+        const jsonResultCategories = await responseCategories.json();
 
         let categoriesIds = [];
 
         if (query) {
           categoriesIds = jsonResultCategories.results
             .filter((category) => query.includes(category.slugs[0]))
-            .map((category) => {
-              return `"${category.id}"`;
-            });
+            .map((category) => `"${category.id}"`);
         }
 
         let apiUrl =
@@ -55,24 +53,22 @@ export function useFilteredProductsFromApi(query, page) {
               )}
 &lang=en-us&pageSize=12`;
 
-        apiUrl = page ? apiUrl + `&page=${page}` : apiUrl + `&page=1`;
+        apiUrl = page ? `${apiUrl}&page=${page}` : `${apiUrl}&page=1`;
 
         const response = await fetch(apiUrl, {
           signal: controller.signal,
         });
-        //&page={page} permite poner numero de hoja
-        let jsonResult = await response.json();
+        //  &page={page} permite poner numero de hoja
+        const jsonResult = await response.json();
 
-        const data = jsonResult.results.map((product) => {
-          return {
-            id: product.id,
-            name: product.data.name,
-            url: product.data.mainimage.url,
-            price: product.data.price,
-            categoryId: product.data.category.id,
-            stock: product.data.stock
-          };
-        });
+        const data = jsonResult.results.map((product) => ({
+          id: product.id,
+          name: product.data.name,
+          url: product.data.mainimage.url,
+          price: product.data.price,
+          categoryId: product.data.category.id,
+          stock: product.data.stock,
+        }));
 
         jsonResult.results = data;
 
@@ -85,7 +81,7 @@ export function useFilteredProductsFromApi(query, page) {
           filteredProductsData: {},
           filteredProductsAreLoading: false,
         });
-        console.error(err);
+        // console.error(err);
       }
     }
 

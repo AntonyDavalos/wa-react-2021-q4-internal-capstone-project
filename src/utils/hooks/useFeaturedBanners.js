@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../constants";
-import { useLatestAPI } from "./useLatestAPI";
+import API_BASE_URL from "../constants";
+import useLatestAPI from "./useLatestAPI";
 
-export function useFeaturedBanners() {
+export default function useFeaturedBanners() {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [featuredBanners, setFeaturedBanners] = useState(() => ({
     banners: [],
@@ -28,20 +28,18 @@ export function useFeaturedBanners() {
             signal: controller.signal,
           }
         );
-        let jsonResult = await response.json(); 
+        const jsonResult = await response.json();
 
-        const data = jsonResult.results.map((banner) => {
-          return {
-            title: banner.data.title,
-            description: banner.data.description[0].text,
-            image: banner.data.main_image.url,
-          };
-        });
+        const data = jsonResult.results.map((banner) => ({
+          title: banner.data.title,
+          description: banner.data.description[0].text,
+          image: banner.data.main_image.url,
+        }));
 
         setFeaturedBanners({ banners: data, bannersAreLoading: false });
       } catch (err) {
         setFeaturedBanners({ banners: [], bannersAreLoading: false });
-        console.error(err);
+        // console.error(err);
       }
     }
 

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 
-//CSS
+// CSS
 import "../styles/HomeCategories.css";
 
-const HomeCategories = ({ categories }) => {
+const HomeCategories = function HomeCategories({ categories, length }) {
   const [previousCategory, setPreviousCategory] = useState(0);
   const [currentCategory, setCurrentCategory] = useState(1);
   const [nextCategory, setNextCategory] = useState(2);
-  const length = categories.length;
 
   const next = () => {
     setPreviousCategory(
@@ -42,26 +41,35 @@ const HomeCategories = ({ categories }) => {
           onClick={previous}
           size={20}
         />
-        <a href={`/products?category={${categories[previousCategory].slug}}`} className="Category">
+        <a
+          href={`/products?category={${categories[previousCategory].slug}}`}
+          className="Category"
+        >
           <img
             src={categories[previousCategory].url}
-            alt={"category " + (previousCategory + 1)}
+            alt={`category ${previousCategory + 1}`}
             className="Category-image"
             title={categories[previousCategory].name}
           />
         </a>
-        <a href={`/products?category={${categories[currentCategory].slug}}`} className="Category">
+        <a
+          href={`/products?category={${categories[currentCategory].slug}}`}
+          className="Category"
+        >
           <img
             src={categories[currentCategory].url}
-            alt={"category " + (currentCategory + 1)}
+            alt={`category ${currentCategory + 1}`}
             className="Category-image"
             title={categories[currentCategory].name}
           />
         </a>
-        <a href={`/products?category={${categories[nextCategory].slug}}`} className="Category">
+        <a
+          href={`/products?category={${categories[nextCategory].slug}}`}
+          className="Category"
+        >
           <img
             src={categories[nextCategory].url}
-            alt={"category " + (nextCategory + 1)}
+            alt={`category ${nextCategory + 1}`}
             className="Category-image"
             title={categories[nextCategory].name}
           />

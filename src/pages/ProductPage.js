@@ -5,17 +5,17 @@ import { Swiper } from "swiper/react/swiper";
 import { SwiperSlide } from "swiper/react/swiper-slide";
 
 import { FaShoppingCart } from "react-icons/fa";
-//Hooks
-import { useProductFromApi } from "../utils/hooks/useProductFromApi";
-import { useCategoriesFromApi } from "../utils/hooks/useCategoriesFromApi";
+// Hooks
+import useProductFromApi from "../utils/hooks/useProductFromApi";
+import useCategoriesFromApi from "../utils/hooks/useCategoriesFromApi";
 
-//Context
+// Context
 import CartContext from "../state/CartContext";
 
-//CSS
+// CSS
 import "../styles/ProductPage.css";
 
-const ProductPage = () => {
+const ProductPage = function ProductPage() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const { productData, productIsLoading } = useProductFromApi(
     useLocation().pathname.split("/")[2]
@@ -41,9 +41,9 @@ const ProductPage = () => {
   }, [categories, categoriesList, product]);
 
   const AddToCart = () => {
-    let itemQuantity = productQuantity;
+    const itemQuantity = productQuantity;
 
-    let updatedCart = productsOnCart.map((item) => {
+    const updatedCart = productsOnCart.map((item) => {
       const newItem = {
         ...item,
         quantity:
@@ -53,7 +53,9 @@ const ProductPage = () => {
       return newItem;
     });
 
-    var foundItem = updatedCart.find((cartItem) => cartItem.id === product.id);
+    const foundItem = updatedCart.find(
+      (cartItem) => cartItem.id === product.id
+    );
 
     if (!foundItem) {
       updatedCart.push({
@@ -67,15 +69,14 @@ const ProductPage = () => {
     }
 
     if (foundItem && foundItem.quantity > foundItem.stock) {
-      alert("Cant add product max in stock: " + foundItem.stock);
+      alert(`Cant add product max in stock: ${foundItem.stock}`);
     } else {
       setProductsOnCart(updatedCart);
-      alert("Added " + itemQuantity + " to the cart");
+      alert(`Added ${itemQuantity} to the cart`);
     }
   };
 
-  const UpdateProduct = (event) => 
-  {
+  const UpdateProduct = (event) => {
     setProductQuantity(Number(event.target.value));
   };
 
@@ -98,36 +99,32 @@ const ProductPage = () => {
                 "--swiper-navigation-color": "#fff",
                 "--swiper-pagination-color": "#fff",
               }}
-              loop={true}
+              loop
               spaceBetween={10}
-              navigation={true}
+              navigation
               thumbs={{ swiper: thumbsSwiper }}
               className="mySwiper2"
             >
-              {product.gallery.map((item) => {
-                return (
-                  <SwiperSlide key={`Main-${item.image.url}`}>
-                    <img src={item.image.url} alt={item.image.alt} />
-                  </SwiperSlide>
-                );
-              })}
+              {product.gallery.map((item) => (
+                <SwiperSlide key={`Main-${item.image.url}`}>
+                  <img src={item.image.url} alt={item.image.alt} />
+                </SwiperSlide>
+              ))}
             </Swiper>
             <Swiper
               onSwiper={setThumbsSwiper}
-              loop={true}
+              loop
               spaceBetween={10}
               slidesPerView={4}
-              freeMode={true}
-              watchSlidesProgress={true}
+              freeMode
+              watchSlidesProgress
               className="mySwiper"
             >
-              {product.gallery.map((item) => {
-                return (
-                  <SwiperSlide key={`Sidebar-${item.image.url}`}>
-                    <img src={item.image.url} alt={item.image.alt} />
-                  </SwiperSlide>
-                );
-              })}
+              {product.gallery.map((item) => (
+                <SwiperSlide key={`Sidebar-${item.image.url}`}>
+                  <img src={item.image.url} alt={item.image.alt} />
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
 
@@ -139,21 +136,29 @@ const ProductPage = () => {
             <div className="Flavour-text">{product.flavourText}</div>
             <div>Specs</div>
             <div className="Spec-container">
-              {product.specs.map((spec) => {
-                return (
-                  <div className="Product-spec" key={spec.spec_name}>
-                    <span>- {spec.spec_value}</span>
-                  </div>
-                );
-              })}
+              {product.specs.map((spec) => (
+                <div className="Product-spec" key={spec.spec_name}>
+                  <span>- {spec.spec_value}</span>
+                </div>
+              ))}
             </div>
             <div className="Buy-options">
               <h3>Comprar</h3>
-              <span className="Add-to-cart Product-view" onClick={AddToCart}>
+              <span
+                role="button"
+                className="Add-to-cart Product-view"
+                onClick={AddToCart}
+                tabIndex={0}
+                aria-hidden="true"
+              >
                 <FaShoppingCart />
               </span>
               <span>Cantidad:</span>
-              <select className="Select-input" value={productQuantity} onChange={UpdateProduct}>
+              <select
+                className="Select-input"
+                value={productQuantity}
+                onChange={UpdateProduct}
+              >
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
