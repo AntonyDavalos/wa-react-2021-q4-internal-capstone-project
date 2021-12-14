@@ -17,10 +17,6 @@ const ProductGrid = function ProductGrid({
   pages,
 }) {
   const query = useQuery();
-  // console.log(showPagination);
-  // console.log(page);
-  // console.log(pages);
-  // console.log(query);
   return (
     <div>
       {products.map((product) => {
