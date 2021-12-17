@@ -20,8 +20,10 @@ const Header = function Header() {
     <div className="App-header">
       <div>
         <NavLink className="Title" to="/">
-          <img className="Logo" src={logo} alt="Logo" width="25px" />
-          Muebleria Xtrema
+          <span title="Homepage">
+            <img className="Logo" src={logo} alt="Logo" width="25px" />
+            Muebleria Xtrema
+          </span>
         </NavLink>
         <span className="Shopping-options">
           <NavLink to="/cart" className="Normilize-link-color">

@@ -50,7 +50,10 @@ const CartProduct = function CartProduct({ product }) {
         <span className="Product-info">
           <div className="Product-name">{product.name}</div>
           <div className="Product-price">
-            Price $ {product.price.toFixed(2)}
+            Price ${" "}
+            <span title={`${product.name} price`}>
+              {product.price.toFixed(2)}
+            </span>
           </div>
           <div>
             Quantity:
@@ -59,10 +62,14 @@ const CartProduct = function CartProduct({ product }) {
               value={product.quantity}
               onChange={UpdateItem}
               type="number"
+              title={`Change ${product.name} Quantity`}
             />
           </div>
           <div className="Product-price">
-            Subtotal $ {(product.price * product.quantity).toFixed(2)}
+            Subtotal ${" "}
+            <span title="Subtotal">
+              {(product.price * product.quantity).toFixed(2)}
+            </span>
           </div>
           <div
             role="button"
@@ -70,6 +77,7 @@ const CartProduct = function CartProduct({ product }) {
             onClick={RemoveFromCart}
             tabIndex={0}
             aria-hidden="true"
+            title={`Remove ${product.name} from cart`}
           >
             <FaTimes /> Remove from cart
           </div>

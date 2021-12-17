@@ -189,7 +189,7 @@ function returnFeaturedProducts() {
           mainimage: {
             url: "https://product-1.jpg",
           },
-          stock: 1,
+          stock: 5,
           price: 1,
         },
       },

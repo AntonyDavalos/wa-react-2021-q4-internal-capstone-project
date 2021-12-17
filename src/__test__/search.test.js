@@ -7,8 +7,8 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe("Get product data", () => {
-  test("Get Product", async () => {
+describe("Get Search", () => {
+  test("Search bullets", async () => {
     await act(async () => render(<App />));
 
     // Get Search Input

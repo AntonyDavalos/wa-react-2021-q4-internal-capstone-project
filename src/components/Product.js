@@ -77,6 +77,7 @@ const Product = function Product({ product, category }) {
               onClick={AddToCart}
               tabIndex={0}
               aria-hidden="true"
+              title={`Add ${product.name}`}
             >
               <FaShoppingCart /> Add to cart
             </div>
