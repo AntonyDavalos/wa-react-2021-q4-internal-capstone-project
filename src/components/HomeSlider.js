@@ -6,10 +6,14 @@ import "../styles/HomeSlider.css";
 // Components
 import BannerComponent from "./BannerComponent";
 
-const HomeSlider = function HomeSlider({ banners, length }) {
+// Hooks
+import useFeaturedBanners from "../utils/hooks/useFeaturedBanners";
+
+const HomeSlider = function HomeSlider() {
+  const { banners, bannersAreLoading } = useFeaturedBanners();
   const [current, setCurrent] = useState(0);
   const nextSlide = () => {
-    setCurrent(current === length - 1 ? 0 : current + 1);
+    setCurrent(current === banners.length - 1 ? 0 : current + 1);
   };
 
   setTimeout(() => {
@@ -22,20 +26,25 @@ const HomeSlider = function HomeSlider({ banners, length }) {
   }, 20000);
 
   return (
-    <section className="Slider" id="home-carrousel">
-      {banners.map((slide, index) => (
-        <div
-          className={index === current ? "slide active" : "slide"}
-          key={`Slide ${slide.title}`}
-        >
-          {index === current && (
-            <div>
-              <BannerComponent banner={slide} index={index} />
+    <div>
+      {!bannersAreLoading && (
+        <section className="Slider" id="home-carrousel">
+          {banners.map((slide, index) => (
+            <div
+              className={index === current ? "slide active" : "slide"}
+              key={`Slide ${slide.title}`}
+            >
+              {index === current && (
+                <div>
+                  <BannerComponent banner={slide} index={index} />
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      ))}
-    </section>
+          ))}
+          {bannersAreLoading && <h3>Loading...</h3>}
+        </section>
+      )}
+    </div>
   );
 };
 

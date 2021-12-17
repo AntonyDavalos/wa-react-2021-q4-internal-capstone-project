@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa";
-
+import { NavLink } from "react-router-dom";
 // Context
 import CartContext from "../state/CartContext";
 
@@ -9,6 +9,18 @@ import "../styles/Product.css";
 
 const Product = function Product({ product, category }) {
   const { productsOnCart, setProductsOnCart } = useContext(CartContext);
+  const [available, setAvailable] = useState(false);
+  const foundInCart = productsOnCart.find(
+    (cartItem) => cartItem.id === product.id
+  );
+
+  useEffect(() => {
+    if (!foundInCart || foundInCart.quantity < product.stock) {
+      setAvailable(true);
+    } else {
+      setAvailable(false);
+    }
+  }, [foundInCart, product.stock]);
 
   const AddToCart = () => {
     const updatedCart = productsOnCart.map((item) => {
@@ -48,22 +60,28 @@ const Product = function Product({ product, category }) {
       <div className="Container-product">
         <img src={product.url} alt={product.id} className="Product-image" />
         <span className="Product-info">
-          <a href={`/product/${product.id}`} className="Normilize-link-color">
+          <NavLink
+            to={`/product/${product.id}`}
+            className="Normilize-link-color"
+          >
             <div className="Product-category">{category}</div>
             <div className="Product-name">{product.name}</div>
             <div className="Product-price">
               Price $ {product.price.toFixed(2)}
             </div>
-          </a>
-          <div
-            role="button"
-            className="Add-to-cart"
-            onClick={AddToCart}
-            tabIndex={0}
-            aria-hidden="true"
-          >
-            <FaShoppingCart /> Add to cart
-          </div>
+          </NavLink>
+          {available && (
+            <div
+              role="button"
+              className="Add-to-cart"
+              onClick={AddToCart}
+              tabIndex={0}
+              aria-hidden="true"
+            >
+              <FaShoppingCart /> Add to cart
+            </div>
+          )}
+          {!available && <div className="Not-available">Not available</div>}
         </span>
       </div>
     </div>

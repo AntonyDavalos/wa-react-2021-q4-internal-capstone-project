@@ -22,7 +22,6 @@ export default function useFilteredProductsFromApi(query, page) {
           filteredProductsData: {},
           filteredProductsAreLoading: true,
         });
-
         const responseCategories = await fetch(
           `${API_BASE_URL}/documents/search?ref=${apiRef}&q=${encodeURIComponent(
             '[[at(document.type, "category")]]'
@@ -54,7 +53,6 @@ export default function useFilteredProductsFromApi(query, page) {
 &lang=en-us&pageSize=12`;
 
         apiUrl = page ? `${apiUrl}&page=${page}` : `${apiUrl}&page=1`;
-
         const response = await fetch(apiUrl, {
           signal: controller.signal,
         });
@@ -69,9 +67,7 @@ export default function useFilteredProductsFromApi(query, page) {
           categoryId: product.data.category.id,
           stock: product.data.stock,
         }));
-
         jsonResult.results = data;
-
         setFilteredProducts({
           filteredProductsData: jsonResult,
           filteredProductsAreLoading: false,

@@ -3,16 +3,14 @@ import { useLocation } from "react-router-dom";
 import ProductGrid from "../components/ProductGrid";
 // Hooks
 import useFilterBySearchTextFromApi from "../utils/hooks/UseFilterBySearchTextFromApi";
-import useCategoriesFromApi from "../utils/hooks/useCategoriesFromApi";
 
 function useQuery() {
   const { search } = useLocation();
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const SearchPage = function SearchPage() {
+const SearchPage = function SearchPage({ categories }) {
   const query = useQuery();
-  const { categories, categoriesAreLoading } = useCategoriesFromApi();
   const { filteredProductsData, filteredProductsAreLoading } =
     useFilterBySearchTextFromApi(query.get("q"), query.get("page"));
   const [products, setProducts] = useState(filteredProductsData.results);
@@ -26,7 +24,7 @@ const SearchPage = function SearchPage() {
     setProducts(filteredProductsData.results);
   }, [filteredProductsData]);
 
-  if (filteredProductsAreLoading || categoriesAreLoading) {
+  if (filteredProductsAreLoading) {
     return <h1>Loading...</h1>;
   }
 

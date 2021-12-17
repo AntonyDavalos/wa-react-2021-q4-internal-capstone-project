@@ -9,7 +9,9 @@
     "axios": "^0.24.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "flush-promises": "^1.0.2",
     "history": "^5.1.0",
+    "jest-fetch-mock": "^3.0.3",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -52,6 +54,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "jest-fetch-mock": "^3.0.3",
     "msw": "^0.36.3"
   }
 }

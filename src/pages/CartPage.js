@@ -12,8 +12,6 @@ import CartContext from "../state/CartContext";
 const CartPage = function CartPage() {
   const { productsOnCart } = useContext(CartContext);
 
-  // console.log(productsOnCart);
-
   if (productsOnCart.length === 0) {
     return <h1>Your shopping cart is empty</h1>;
   }

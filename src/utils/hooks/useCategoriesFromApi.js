@@ -29,7 +29,6 @@ export default function useCategoriesFromApi() {
           }
         );
         const jsonResult = await response.json();
-
         const data = jsonResult.results.map((category) => ({
           name: category.data.name,
           slug: category.slugs[0],

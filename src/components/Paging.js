@@ -9,7 +9,11 @@ const getPages = (pages, selected, location) => {
 
   if (selected !== 1) {
     content.push(
-      <a href={`${location}&page=${selected - 1}`} key="page before">
+      <a
+        href={`${location}&page=${selected - 1}`}
+        key="page before"
+        title="Previous"
+      >
         <span className="Paging-element">&lt;</span>
       </a>
     );
@@ -23,7 +27,11 @@ const getPages = (pages, selected, location) => {
     );
   }
   content.push(
-    <span className="Paging-element-active" key={`page ${selected}`}>
+    <span
+      className="Paging-element-active"
+      key={`page ${selected}`}
+      title={`Page ${selected}`}
+    >
       {selected}
     </span>
   );
@@ -34,7 +42,11 @@ const getPages = (pages, selected, location) => {
     after += 1
   ) {
     content.push(
-      <a href={`${location}&page=${after}`} key={`page ${after}`}>
+      <a
+        href={`${location}&page=${after}`}
+        key={`page ${after}`}
+        title={`Page ${after}`}
+      >
         <span className="Paging-element">{after}</span>
       </a>
     );
@@ -50,7 +62,11 @@ const getPages = (pages, selected, location) => {
 
   if (selected !== pages) {
     content.push(
-      <a href={`${location}&page=${selected + 1}`} key="page after">
+      <a
+        href={`${location}&page=${selected + 1}`}
+        key="page after"
+        title="Next"
+      >
         <span className="Paging-element">&gt;</span>
       </a>
     );
@@ -73,7 +89,7 @@ const Paging = function Paging({ page, pages, query }) {
     <div className="Paging">
       {page !== 1 && (
         <a href={`${url}&page=1`}>
-          <span className="Paging-element" key="page-First">
+          <span className="Paging-element" key="page-First" title="First">
             &laquo;
           </span>
         </a>
@@ -81,7 +97,7 @@ const Paging = function Paging({ page, pages, query }) {
       {getPages(pages, page, url)}
       {page !== pages && (
         <a href={`${url}&page=${pages}`}>
-          <span className="Paging-element" key="page-Last">
+          <span className="Paging-element" key="page-Last" title="Last">
             &raquo;
           </span>
         </a>

@@ -27,23 +27,24 @@ export default function useProductFromApi(productId) {
             signal: controller.signal,
           }
         );
+
         const jsonResult = await response.json();
-
-        const data = jsonResult.results.map((product) => ({
-          id: product.id,
-          sku: product.data.sku,
-          name: product.data.name,
-          url: product.data.mainimage.url,
-          price: product.data.price,
-          categoryId: product.data.category.id,
-          tags: product.tags,
-          flavourText: product.data.short_description,
-          specs: product.data.specs,
-          gallery: product.data.images,
-          stock: product.data.stock,
-        }));
-
-        jsonResult.results = data;
+        if (jsonResult.results.length > 0) {
+          const data = jsonResult.results.map((product) => ({
+            id: product.id,
+            sku: product.data.sku,
+            name: product.data.name,
+            url: product.data.mainimage.url,
+            price: product.data.price,
+            categoryId: product.data.category.id,
+            tags: product.tags,
+            flavourText: product.data.short_description,
+            specs: product.data.specs,
+            gallery: product.data.images,
+            stock: product.data.stock,
+          }));
+          jsonResult.results = data;
+        }
         setFoundProduct({ productData: jsonResult, productIsLoading: false });
       } catch (err) {
         setFoundProduct({ productData: {}, productIsLoading: false });

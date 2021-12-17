@@ -31,6 +31,5 @@ export default function useLatestAPI() {
       controller.abort();
     };
   }, []);
-
   return apiMetadata;
 }

@@ -7,7 +7,6 @@ import { SwiperSlide } from "swiper/react/swiper-slide";
 import { FaShoppingCart } from "react-icons/fa";
 // Hooks
 import useProductFromApi from "../utils/hooks/useProductFromApi";
-import useCategoriesFromApi from "../utils/hooks/useCategoriesFromApi";
 
 // Context
 import CartContext from "../state/CartContext";
@@ -15,17 +14,31 @@ import CartContext from "../state/CartContext";
 // CSS
 import "../styles/ProductPage.css";
 
-const ProductPage = function ProductPage() {
+const ProductPage = function ProductPage({ categories }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const { productData, productIsLoading } = useProductFromApi(
     useLocation().pathname.split("/")[2]
   );
-  const [product, setProduct] = useState({});
-  const { categories, categoriesAreLoading } = useCategoriesFromApi();
+  const [product, setProduct] = useState();
   const [categoriesList, setItems] = useState(categories);
   const [productCategory, setCategory] = useState({});
   const { productsOnCart, setProductsOnCart } = useContext(CartContext);
-  const [productQuantity, setProductQuantity] = useState(0);
+  const [productQuantity, setProductQuantity] = useState(1);
+  const [available, setAvailable] = useState(false);
+
+  useEffect(() => {
+    if (product) {
+      const foundInCart = productsOnCart.find(
+        (cartItem) => cartItem.id === product.id
+      );
+
+      if (!foundInCart || foundInCart.quantity < product.stock) {
+        setAvailable(true);
+      } else {
+        setAvailable(false);
+      }
+    }
+  }, [productsOnCart, product]);
 
   useEffect(() => {
     if (productData.results) {
@@ -35,9 +48,11 @@ const ProductPage = function ProductPage() {
 
   useEffect(() => {
     setItems(categories);
-    setCategory(
-      categoriesList.find((category) => category.id === product.categoryId)
-    );
+    if (product) {
+      setCategory(
+        categoriesList.find((category) => category.id === product.categoryId)
+      );
+    }
   }, [categories, categoriesList, product]);
 
   const AddToCart = () => {
@@ -80,14 +95,13 @@ const ProductPage = function ProductPage() {
     setProductQuantity(Number(event.target.value));
   };
 
-  if (productIsLoading || categoriesAreLoading) {
+  if (productIsLoading) {
     return <h1>Loading...</h1>;
   }
 
   if (!product) {
     return <h1>Product Not Found</h1>;
   }
-
   return (
     <div>
       {product && product.gallery && (
@@ -129,11 +143,24 @@ const ProductPage = function ProductPage() {
           </div>
 
           <div className="Detail-card">
-            <div>Price: ${product.price}</div>
-            <div>SKU: {product.sku}</div>
-            <div>Category: {productCategory && `${productCategory.name}`}</div>
-            <div>Tags: {product.tags.join(", ")}</div>
-            <div className="Flavour-text">{product.flavourText}</div>
+            <div>
+              <span>Price: $</span>
+              {product.price}
+            </div>
+            <div>
+              <span>SKU:</span> {product.sku}
+            </div>
+            <div>
+              <span>Category:</span>{" "}
+              {productCategory && `${productCategory.name}`}
+            </div>
+            <div>
+              <span>Tags:</span> {product.tags.join(", ")}
+            </div>
+            <div className="Flavour-text">
+              <div>Description</div>
+              {product.flavourText}
+            </div>
             <div>Specs</div>
             <div className="Spec-container">
               {product.specs.map((spec) => (
@@ -144,31 +171,42 @@ const ProductPage = function ProductPage() {
             </div>
             <div className="Buy-options">
               <h3>Comprar</h3>
-              <span
-                role="button"
-                className="Add-to-cart Product-view"
-                onClick={AddToCart}
-                tabIndex={0}
-                aria-hidden="true"
-              >
-                <FaShoppingCart />
-              </span>
-              <span>Cantidad:</span>
-              <select
-                className="Select-input"
-                value={productQuantity}
-                onChange={UpdateProduct}
-              >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-              </select>
+              {available && (
+                <div>
+                  <span
+                    role="button"
+                    className="Add-to-cart Product-view"
+                    onClick={AddToCart}
+                    tabIndex={0}
+                    aria-hidden="true"
+                    title="Buy"
+                  >
+                    <FaShoppingCart />
+                  </span>
+                  <span>Cantidad:</span>
+                  <select
+                    className="Select-input"
+                    value={productQuantity}
+                    onChange={UpdateProduct}
+                    title="Quantity"
+                  >
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                  </select>
+                </div>
+              )}
+              {!available && (
+                <span className="Not-available Product-view">
+                  Not available
+                </span>
+              )}
             </div>
           </div>
         </div>

@@ -11,7 +11,9 @@ const OnCartComponent = function OnCartComponent() {
   return (
     <span className="On-cart">
       <FaShoppingCart className="Shopping-cart" size={20} />
-      <span>{productsOnCart.reduce((n, { quantity }) => n + quantity, 0)}</span>
+      <span title="On-Cart">
+        {productsOnCart.reduce((n, { quantity }) => n + quantity, 0)}
+      </span>
     </span>
   );
 };

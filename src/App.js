@@ -26,10 +26,8 @@ import Checkout from "./pages/CheckoutPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-// Hooks
-import useFeaturedBanners from "./utils/hooks/useFeaturedBanners";
+// Hook
 import useCategoriesFromApi from "./utils/hooks/useCategoriesFromApi";
-import useFeaturedProductsFromApi from "./utils/hooks/useFeaturedProductsFromApi";
 
 // Import Swiper styles
 import "swiper/swiper-bundle.min.css";
@@ -39,11 +37,8 @@ import "swiper/swiper.min.css";
 SwiperCore.use([FreeMode, Navigation, Thumbs]);
 
 const App = function App() {
-  const { banners, bannersAreLoading } = useFeaturedBanners();
   const { categories, categoriesAreLoading } = useCategoriesFromApi();
   const [productsOnCart, setProductsOnCart] = useState([]);
-  const { featuredProducts, featuredProductsAreLoading } =
-    useFeaturedProductsFromApi();
   const cartContextProvider = React.useMemo(
     () => ({ productsOnCart, setProductsOnCart }),
     [productsOnCart]
@@ -60,7 +55,7 @@ const App = function App() {
     localStorage.setItem("my-cart", JSON.stringify(productsOnCart));
   });
 
-  if (bannersAreLoading || categoriesAreLoading || featuredProductsAreLoading) {
+  if (categoriesAreLoading) {
     return <h1>Loading...</h1>;
   }
   return (
@@ -74,13 +69,7 @@ const App = function App() {
                 <Route
                   key={path}
                   path={path}
-                  element={
-                    <Home
-                      banners={banners}
-                      featuredProducts={featuredProducts}
-                      categories={categories}
-                    />
-                  }
+                  element={<Home categories={categories} />}
                 />
               ))}
               {[
@@ -88,10 +77,20 @@ const App = function App() {
                 "/products?category={categorySlug}",
                 "/products?page=",
               ].map((path) => (
-                <Route key={path} path={path} element={<AllProducts />} />
+                <Route
+                  key={path}
+                  path={path}
+                  element={<AllProducts categories={categories} />}
+                />
               ))}
-              <Route path="/product/:id" element={<Product />} />
-              <Route path="/search" element={<Search />} />
+              <Route
+                path="/product/:id"
+                element={<Product categories={categories} />}
+              />
+              <Route
+                path="/search"
+                element={<Search categories={categories} />}
+              />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
             </Routes>

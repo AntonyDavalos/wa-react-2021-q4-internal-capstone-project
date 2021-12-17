@@ -27,12 +27,13 @@ const Header = function Header() {
           <NavLink to="/cart" className="Normilize-link-color">
             <OnCart />
           </NavLink>
-          <a href={`/search?q=${url}`} className="Normilize-link-color">
-            <FaSearch className="Shopping-cart" size={20} />
-          </a>
+          <NavLink to={`/search?q=${url}`} className="Normilize-link-color">
+            <FaSearch className="Shopping-cart" size={20} title="Search now" />
+          </NavLink>
           <input
             placeholder="Search"
             className="Search-input"
+            title="Search"
             onChange={handleChange}
           />
         </span>

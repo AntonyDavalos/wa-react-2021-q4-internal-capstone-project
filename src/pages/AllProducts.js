@@ -5,17 +5,15 @@ import ProductGrid from "../components/ProductGrid";
 
 // Hooks
 import useFilteredProductsFromApi from "../utils/hooks/useFilteredProductsFromApi";
-import useCategoriesFromApi from "../utils/hooks/useCategoriesFromApi";
 
 function useQuery() {
   const { search } = useLocation();
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const AllProducts = function AllProducts() {
+const AllProducts = function AllProducts({ categories }) {
   const query = useQuery();
 
-  const { categories, categoriesAreLoading } = useCategoriesFromApi();
   const { filteredProductsData, filteredProductsAreLoading } =
     useFilteredProductsFromApi(query.get("category"), query.get("page"));
   const [sidebarCategories, setItems] = useState(categories);
@@ -29,10 +27,9 @@ const AllProducts = function AllProducts() {
     setProducts(filteredProductsData.results);
   }, [filteredProductsData]);
 
-  if (categoriesAreLoading || filteredProductsAreLoading) {
+  if (filteredProductsAreLoading) {
     return <h1>Loading...</h1>;
   }
-
   return (
     <div>
       <Sidebar categories={sidebarCategories} query={query.get("category")} />
