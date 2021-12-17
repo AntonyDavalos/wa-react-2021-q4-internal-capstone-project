@@ -1,45 +1,46 @@
 import React, { useContext } from "react";
 import { FaTimes } from "react-icons/fa";
 
-//Context
+// Context
 import CartContext from "../state/CartContext";
 
-//CSS
+// CSS
 import "../styles/Product.css";
 
-const CartProduct = ({ product }) => {
+const CartProduct = function CartProduct({ product }) {
   const { productsOnCart, setProductsOnCart } = useContext(CartContext);
 
   const RemoveFromCart = () => {
-    let updatedCart = productsOnCart.filter(
+    const updatedCart = productsOnCart.filter(
       (cartItem) => cartItem.id !== product.id
     );
     setProductsOnCart(updatedCart);
   };
 
-  const UpdateItem = (event) => 
-  {
-    let updatedCart = productsOnCart.map((item) => {
+  const UpdateItem = (event) => {
+    const updatedCart = productsOnCart.map((item) => {
       const newItem = {
         ...item,
-        quantity: product.id === item.id && Number(event.target.value) <= product.stock ? Number(event.target.value) : item.quantity,
+        quantity:
+          product.id === item.id && Number(event.target.value) <= product.stock
+            ? Number(event.target.value)
+            : item.quantity,
       };
 
       return newItem;
     });
 
-    if(event.target.value*1 === 0 ){
-      RemoveFromCart()
+    if (event.target.value * 1 === 0) {
+      RemoveFromCart();
       alert("Removed from cart.");
-      return 
+      return;
     }
 
-    if(product.stock < Number(event.target.value)){
-        alert("Cant update product max in stock: "+product.stock);
-    }else{
-        setProductsOnCart(updatedCart);
+    if (product.stock < Number(event.target.value)) {
+      alert(`Cant update product max in stock:  ${product.stock}`);
+    } else {
+      setProductsOnCart(updatedCart);
     }
-
   };
 
   return (
@@ -48,15 +49,36 @@ const CartProduct = ({ product }) => {
         <img src={product.url} alt={product.id} className="Product-image" />
         <span className="Product-info">
           <div className="Product-name">{product.name}</div>
-          <div className="Product-price">Price $ {product.price.toFixed(2)}</div>
+          <div className="Product-price">
+            Price ${" "}
+            <span title={`${product.name} price`}>
+              {product.price.toFixed(2)}
+            </span>
+          </div>
           <div>
             Quantity:
-            <input name={`Product-${product.id}`} value={product.quantity} onChange={UpdateItem} type="number"/>
+            <input
+              name={`Product-${product.id}`}
+              value={product.quantity}
+              onChange={UpdateItem}
+              type="number"
+              title={`Change ${product.name} Quantity`}
+            />
           </div>
           <div className="Product-price">
-            Subtotal $ {(product.price * product.quantity).toFixed(2)}
+            Subtotal ${" "}
+            <span title="Subtotal">
+              {(product.price * product.quantity).toFixed(2)}
+            </span>
           </div>
-          <div className="Add-to-cart" onClick={RemoveFromCart}>
+          <div
+            role="button"
+            className="Add-to-cart"
+            onClick={RemoveFromCart}
+            tabIndex={0}
+            aria-hidden="true"
+            title={`Remove ${product.name} from cart`}
+          >
             <FaTimes /> Remove from cart
           </div>
         </span>

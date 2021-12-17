@@ -1,9 +1,9 @@
 import React from "react";
 
-//CSS
+// CSS
 import "../styles/Sidebar.css";
 
-const Sidebar = ({ categories, query }) => {
+const Sidebar = function Sidebar({ categories, query }) {
   let originalFilters = [];
   if (query) {
     originalFilters = query.replace("{", "").replace("}", "").split(",");
@@ -14,22 +14,23 @@ const Sidebar = ({ categories, query }) => {
         <div className="Sidebar-element">Clear All</div>
       </a>
       {categories.map((category) => {
+        let selected = false;
         let queryFilters = [];
 
         if (!originalFilters.includes(category.slug)) {
-          category.selected = false;
-          queryFilters = originalFilters.map((category) => {
-            return category;
-          });
+          queryFilters = originalFilters.map(
+            (categoryFilter) => categoryFilter
+          );
           queryFilters.push(category.slug);
         } else {
-          category.selected = true;
+          selected = true;
           queryFilters = originalFilters.filter(
             (filter) => filter !== category.slug
           );
         }
         return (
-          <a href={`${
+          <a
+            href={`${
               queryFilters.length === 0
                 ? "/products"
                 : `/products?category={${queryFilters.join(",")}}`
@@ -38,9 +39,7 @@ const Sidebar = ({ categories, query }) => {
           >
             <div
               className={`${
-                category.selected
-                  ? "Selected-sidebar-element"
-                  : "Sidebar-element"
+                selected ? "Selected-sidebar-element" : "Sidebar-element"
               }`}
             >
               {category.name}

@@ -1,14 +1,16 @@
 import React from "react";
 import ProductGrid from "./ProductGrid";
 
-const FeaturedProducts = ({ products, categories }) => {
+// Hook
+import useFeaturedProductsFromApi from "../utils/hooks/useFeaturedProductsFromApi";
+
+const FeaturedProducts = function FeaturedProducts({ categories }) {
+  const { featuredProducts, featuredProductsAreLoading } =
+    useFeaturedProductsFromApi();
   return (
     <div className="Featured">
-      {products && (
-        <ProductGrid
-          products={products}
-          categories={categories}
-        />
+      {!featuredProductsAreLoading && (
+        <ProductGrid products={featuredProducts} categories={categories} />
       )}
     </div>
   );

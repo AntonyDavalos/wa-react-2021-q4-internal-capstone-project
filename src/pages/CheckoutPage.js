@@ -1,41 +1,45 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
-//CSS
+// CSS
 import "../styles/CheckoutPage.css";
 
-//Context
+// Context
 import CartContext from "../state/CartContext";
 
-const CheckoutPage = () => {
+const CheckoutPage = function CheckoutPage() {
   const { productsOnCart } = useContext(CartContext);
 
   return (
     <div>
-        <form className="Checkout-form">
-            <div className="Checkout-input">
-                <label>Name</label>
-                <input type="text"></input>
-            </div>
-            <br />
-            <div className="Checkout-input">
-                <label>Email</label>
-                <input type="text"></input>
-            </div>
-            <br />
-            <div className="Checkout-input">
-                <label>Zip code</label>
-                <input type="text"></input>
-            </div>
-            <br />
-            <div className="Checkout-input">
-                <label>Comments</label>
-            </div>
-            <div className="Checkout-input">
-                <textarea type="textarea"></textarea>
-            </div>
-        </form>
+      <form className="Checkout-form">
+        <div className="Checkout-input">
+          <label htmlFor="form-Name">
+            Name <input id="form-Name" type="text" />
+          </label>
+        </div>
         <br />
+        <div className="Checkout-input">
+          <label htmlFor="form-Email">
+            Email <input id="form-Email" type="text" />
+          </label>
+        </div>
         <br />
+        <div className="Checkout-input">
+          <label htmlFor="form-Zip">
+            Zip code
+            <input id="form-Zip" type="text" />
+          </label>
+        </div>
+        <br />
+        <div className="Checkout-input">
+          <div>Comments</div>
+        </div>
+        <div className="Checkout-input">
+          <textarea type="textarea" />
+        </div>
+      </form>
+      <br />
+      <br />
       <table className="Checkout-table">
         <thead>
           <tr>
@@ -46,22 +50,20 @@ const CheckoutPage = () => {
           </tr>
         </thead>
         <tbody>
-          {productsOnCart.map((product) => {
-            return (
-              <tr key={product.id}>
-                <td className="Table-data">{product.name}</td>
-                <td>{product.quantity}</td>
-                <td className="Table-price">$ {product.price.toFixed(2)}</td>
-                <td className="Table-price">
-                  $ {(product.price * product.quantity).toFixed(2)}
-                </td>
-              </tr>
-            );
-          })}
+          {productsOnCart.map((product) => (
+            <tr key={product.id}>
+              <td className="Table-data">{product.name}</td>
+              <td>{product.quantity}</td>
+              <td className="Table-price">$ {product.price.toFixed(2)}</td>
+              <td className="Table-price">
+                $ {(product.price * product.quantity).toFixed(2)}
+              </td>
+            </tr>
+          ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan="3"></td>
+            <td colSpan="3" />
             <td>
               $
               {productsOnCart && productsOnCart.length > 0

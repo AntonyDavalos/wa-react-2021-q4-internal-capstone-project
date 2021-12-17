@@ -1,27 +1,24 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-//Called Components
+// Called Components
 import HomeSliderComponent from "../components/HomeSlider";
 import HomeCategoriesComponent from "../components/HomeCategories";
 import FeaturedProductsComponent from "../components/FeaturedProducts";
-import { NavLink } from "react-router-dom";
 
-const Home = ({ banners, featuredProducts, categories}) => {
+const Home = function Home({ categories }) {
   return (
     <div className="Home">
       <div className="featuredSlider">
-        <HomeSliderComponent banners={banners} />
+        <HomeSliderComponent />
       </div>
       <div className="Categories">
-        <HomeCategoriesComponent categories={categories} />
+        <HomeCategoriesComponent />
       </div>
       <div className="Products">
-        <FeaturedProductsComponent
-          products={featuredProducts}
-          categories={categories}
-        />
+        <FeaturedProductsComponent categories={categories} />
         <NavLink to="/products">
-          <button className="See-more-button">
+          <button type="button" className="See-more-button">
             View all products
           </button>
         </NavLink>

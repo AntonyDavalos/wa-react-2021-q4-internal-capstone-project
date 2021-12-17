@@ -34,6 +34,15 @@
   max-width: 90%;
 }
 
+.Not-available {
+  margin-top: 2%;
+  border-radius: 10px;
+  cursor: not-allowed;
+  background-color: white;
+  color: black;
+  max-width: 90%;
+}
+
 .Product-category {
   color: white;
   text-decoration: none;

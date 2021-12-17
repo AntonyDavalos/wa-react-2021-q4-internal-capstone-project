@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../constants";
-import { useLatestAPI } from "./useLatestAPI";
+import API_BASE_URL from "../constants";
+import useLatestAPI from "./useLatestAPI";
 
-export function useFilterBySearchTextFromApi(query, page) {
+export default function useFilterBySearchTextFromApi(query, page) {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [filteredProductsData, setFilteredProducts] = useState(() => ({
     filteredProductsData: {},
@@ -25,28 +25,24 @@ export function useFilterBySearchTextFromApi(query, page) {
 
         let apiUrl = `${API_BASE_URL}/documents/search?ref=${apiRef}&q=${encodeURIComponent(
           '[[at(document.type, "product")]]'
-        )}&q=${encodeURIComponent(
-          `[[fulltext(document, "${query}")]]`
-        )}
+        )}&q=${encodeURIComponent(`[[fulltext(document, "${query}")]]`)}
 &lang=en-us&pageSize=20`;
 
-        apiUrl = page ? apiUrl + `&page=${page}` : apiUrl + `&page=1`;
+        apiUrl = page ? `${apiUrl}&page=${page}` : `${apiUrl}&page=1`;
 
         const response = await fetch(apiUrl, {
           signal: controller.signal,
         });
-        let jsonResult = await response.json();
+        const jsonResult = await response.json();
 
-        const data = jsonResult.results.map((product) => {
-          return {
-            id: product.id,
-            name: product.data.name,
-            url: product.data.mainimage.url,
-            price: product.data.price,
-            categoryId: product.data.category.id,
-            stock: product.data.stock
-          };
-        });
+        const data = jsonResult.results.map((product) => ({
+          id: product.id,
+          name: product.data.name,
+          url: product.data.mainimage.url,
+          price: product.data.price,
+          categoryId: product.data.category.id,
+          stock: product.data.stock,
+        }));
 
         jsonResult.results = data;
 
@@ -59,7 +55,7 @@ export function useFilterBySearchTextFromApi(query, page) {
           filteredProductsData: {},
           filteredProductsAreLoading: false,
         });
-        console.error(err);
+        // console.error(err);
       }
     }
 

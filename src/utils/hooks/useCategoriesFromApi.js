@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../constants";
-import { useLatestAPI } from "./useLatestAPI";
+import API_BASE_URL from "../constants";
+import useLatestAPI from "./useLatestAPI";
 
-export function useCategoriesFromApi() {
+export default function useCategoriesFromApi() {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [featuredCategories, setFeaturedCategories] = useState(() => ({
     categories: [],
@@ -28,21 +28,21 @@ export function useCategoriesFromApi() {
             signal: controller.signal,
           }
         );
-        let jsonResult = await response.json();
-
-        const data = jsonResult.results.map((category) => {
-          return {
-            name: category.data.name,
-            slug: category.slugs[0],
-            id: category.id,
-            url: category.data.main_image.url,
-            selected: false,
-          };
+        const jsonResult = await response.json();
+        const data = jsonResult.results.map((category) => ({
+          name: category.data.name,
+          slug: category.slugs[0],
+          id: category.id,
+          url: category.data.main_image.url,
+          selected: false,
+        }));
+        setFeaturedCategories({
+          categories: data,
+          categoriesAreLoading: false,
         });
-        setFeaturedCategories({ categories: data, categoriesAreLoading: false });
       } catch (err) {
         setFeaturedCategories({ categories: [], categoriesAreLoading: false });
-        console.error(err);
+        // console.error(err);
       }
     }
 

@@ -2,10 +2,13 @@ import React, { useState } from "react";
 
 import "./styles/App.css";
 
+// import Swiper core and required modules
+import SwiperCore, { FreeMode, Navigation, Thumbs } from "swiper";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CartContext from "./state/CartContext";
 
-//Pages
+// Pages
 // "/Home" and "/"
 import AllProducts from "./pages/AllProducts";
 // "/all-products"
@@ -19,32 +22,27 @@ import Cart from "./pages/CartPage";
 // "/checkout"
 import Checkout from "./pages/CheckoutPage";
 
-//Components
+// Components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-//Hooks
-import { useFeaturedBanners } from "./utils/hooks/useFeaturedBanners";
-import { useCategoriesFromApi } from "./utils/hooks/useCategoriesFromApi";
-import { useFeaturedProductsFromApi } from "./utils/hooks/useFeaturedProductsFromApi";
+// Hook
+import useCategoriesFromApi from "./utils/hooks/useCategoriesFromApi";
 
 // Import Swiper styles
 import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
 
-// import Swiper core and required modules
-import SwiperCore, { FreeMode, Navigation, Thumbs } from "swiper";
-
 // install Swiper modules
 SwiperCore.use([FreeMode, Navigation, Thumbs]);
 
-function App() {
-  const { banners, bannersAreLoading } = useFeaturedBanners();
+const App = function App() {
   const { categories, categoriesAreLoading } = useCategoriesFromApi();
   const [productsOnCart, setProductsOnCart] = useState([]);
-  const { featuredProducts, featuredProductsAreLoading } =
-    useFeaturedProductsFromApi();
-  const cartContextProvider = { productsOnCart, setProductsOnCart };
+  const cartContextProvider = React.useMemo(
+    () => ({ productsOnCart, setProductsOnCart }),
+    [productsOnCart]
+  );
 
   React.useEffect(() => {
     const data = localStorage.getItem("my-cart");
@@ -57,10 +55,9 @@ function App() {
     localStorage.setItem("my-cart", JSON.stringify(productsOnCart));
   });
 
-  if (bannersAreLoading || categoriesAreLoading || featuredProductsAreLoading) {
+  if (categoriesAreLoading) {
     return <h1>Loading...</h1>;
   }
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -68,32 +65,32 @@ function App() {
           <Header />
           <div className="Body">
             <Routes>
-              {["/home", "/"].map((path, index) => (
+              {["/home", "/"].map((path) => (
                 <Route
-                  key={path + index}
+                  key={path}
                   path={path}
-                  element={
-                    <Home
-                      banners={banners}
-                      featuredProducts={featuredProducts}
-                      categories={categories}
-                    />
-                  }
-                ></Route>
+                  element={<Home categories={categories} />}
+                />
               ))}
               {[
                 "/products",
                 "/products?category={categorySlug}",
                 "/products?page=",
-              ].map((path, index) => (
+              ].map((path) => (
                 <Route
-                  key={path + index}
+                  key={path}
                   path={path}
-                  element={<AllProducts />}
-                ></Route>
+                  element={<AllProducts categories={categories} />}
+                />
               ))}
-              <Route path="/product/:id" element={<Product />} />
-              <Route path="/search" element={<Search />} />
+              <Route
+                path="/product/:id"
+                element={<Product categories={categories} />}
+              />
+              <Route
+                path="/search"
+                element={<Search categories={categories} />}
+              />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
             </Routes>
@@ -103,6 +100,6 @@ function App() {
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;

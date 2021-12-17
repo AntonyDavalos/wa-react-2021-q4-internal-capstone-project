@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import ProductGrid from "../components/ProductGrid";
-import { useLocation } from "react-router-dom";
-//Hooks
-import { useFilteredProductsFromApi } from "../utils/hooks/useFilteredProductsFromApi";
-import { useCategoriesFromApi } from "../utils/hooks/useCategoriesFromApi";
+
+// Hooks
+import useFilteredProductsFromApi from "../utils/hooks/useFilteredProductsFromApi";
 
 function useQuery() {
   const { search } = useLocation();
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const AllProducts = () => {
-  let query = useQuery();
-  
-  const { categories, categoriesAreLoading } = useCategoriesFromApi();
+const AllProducts = function AllProducts({ categories }) {
+  const query = useQuery();
+
   const { filteredProductsData, filteredProductsAreLoading } =
     useFilteredProductsFromApi(query.get("category"), query.get("page"));
   const [sidebarCategories, setItems] = useState(categories);
@@ -26,19 +25,23 @@ const AllProducts = () => {
 
   useEffect(() => {
     setProducts(filteredProductsData.results);
-    }, [filteredProductsData]);
+  }, [filteredProductsData]);
 
-  if (categoriesAreLoading || filteredProductsAreLoading) {
+  if (filteredProductsAreLoading) {
     return <h1>Loading...</h1>;
   }
-
   return (
     <div>
       <Sidebar categories={sidebarCategories} query={query.get("category")} />
-      {products && !filteredProductsData && 
-      <ProductGrid products={products} categories={sidebarCategories}/>}
-      {products && filteredProductsData && 
-      <ProductGrid products={products} categories={sidebarCategories} showPagination={true} page={filteredProductsData.page} pages={filteredProductsData.total_pages}/>}
+      {products && filteredProductsData && (
+        <ProductGrid
+          products={products}
+          categories={sidebarCategories}
+          showPagination="true"
+          page={filteredProductsData.page}
+          pages={filteredProductsData.total_pages}
+        />
+      )}
     </div>
   );
 };

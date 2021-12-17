@@ -1,36 +1,43 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import logo from "../Logo.png";
 import { NavLink } from "react-router-dom";
+import logo from "../Logo.png";
 
-//CSS
+// CSS
 import "../styles/Header.css";
 
-//Components
+// Components
 import OnCart from "./OnCartComponent";
 
-const Header = () => {
+const Header = function Header() {
   const [url, changeUrl] = useState("");
 
   const handleChange = (event) => {
     changeUrl(event.target.value);
-  }
+  };
 
   return (
     <div className="App-header">
       <div>
         <NavLink className="Title" to="/">
-          <img className="Logo" src={logo} alt="Logo" width="25px" />
-          Muebleria Xtrema
+          <span title="Homepage">
+            <img className="Logo" src={logo} alt="Logo" width="25px" />
+            Muebleria Xtrema
+          </span>
         </NavLink>
         <span className="Shopping-options">
           <NavLink to="/cart" className="Normilize-link-color">
             <OnCart />
           </NavLink>
-          <a href={`/search?q=${url}`} className="Normilize-link-color">
-            <FaSearch className="Shopping-cart" size={20}/>
-          </a>
-          <input placeholder="Search" className="Search-input" onChange={handleChange}></input>
+          <NavLink to={`/search?q=${url}`} className="Normilize-link-color">
+            <FaSearch className="Shopping-cart" size={20} title="Search now" />
+          </NavLink>
+          <input
+            placeholder="Search"
+            className="Search-input"
+            title="Search"
+            onChange={handleChange}
+          />
         </span>
       </div>
     </div>

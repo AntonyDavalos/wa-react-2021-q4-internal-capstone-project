@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../constants";
-import { useLatestAPI } from "./useLatestAPI";
+import API_BASE_URL from "../constants";
+import useLatestAPI from "./useLatestAPI";
 
-export function useProductFromApi(productId) {
+export default function useProductFromApi(productId) {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [foundProduct, setFoundProduct] = useState(() => ({
     productData: {},
@@ -27,10 +27,10 @@ export function useProductFromApi(productId) {
             signal: controller.signal,
           }
         );
-        let jsonResult = await response.json();
 
-        const data = jsonResult.results.map((product) => {
-          return {
+        const jsonResult = await response.json();
+        if (jsonResult.results.length > 0) {
+          const data = jsonResult.results.map((product) => ({
             id: product.id,
             sku: product.data.sku,
             name: product.data.name,
@@ -41,16 +41,14 @@ export function useProductFromApi(productId) {
             flavourText: product.data.short_description,
             specs: product.data.specs,
             gallery: product.data.images,
-            stock: product.data.stock
-          };
-        });
-
-        jsonResult.results = data;
-        
+            stock: product.data.stock,
+          }));
+          jsonResult.results = data;
+        }
         setFoundProduct({ productData: jsonResult, productIsLoading: false });
       } catch (err) {
         setFoundProduct({ productData: {}, productIsLoading: false });
-        console.error(err);
+        // console.error(err);
       }
     }
 

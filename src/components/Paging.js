@@ -1,15 +1,19 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-//CSS
+// CSS
 import "../styles/Paging.css";
 
 const getPages = (pages, selected, location) => {
-  let content = [];
+  const content = [];
 
   if (selected !== 1) {
     content.push(
-      <a href={`${location}&page=${selected - 1}`} key={"page before"}>
+      <a
+        href={`${location}&page=${selected - 1}`}
+        key="page before"
+        title="Previous"
+      >
         <span className="Paging-element">&lt;</span>
       </a>
     );
@@ -17,13 +21,17 @@ const getPages = (pages, selected, location) => {
 
   if (selected > 1) {
     content.push(
-      <span className="Paging-element" key={"dotdotdot before"}>
+      <span className="Paging-element" key="dotdotdot before">
         ...
       </span>
     );
   }
   content.push(
-    <span className="Paging-element-active" key={"page " + selected}>
+    <span
+      className="Paging-element-active"
+      key={`page ${selected}`}
+      title={`Page ${selected}`}
+    >
       {selected}
     </span>
   );
@@ -31,10 +39,14 @@ const getPages = (pages, selected, location) => {
   for (
     let after = selected + 1;
     after <= pages && after <= selected + 2;
-    after++
+    after += 1
   ) {
     content.push(
-      <a href={`${location}&page=${after}`} key={"page " + after}>
+      <a
+        href={`${location}&page=${after}`}
+        key={`page ${after}`}
+        title={`Page ${after}`}
+      >
         <span className="Paging-element">{after}</span>
       </a>
     );
@@ -42,7 +54,7 @@ const getPages = (pages, selected, location) => {
 
   if (selected + 2 < pages) {
     content.push(
-      <span className="Paging-element" key={"dotdotdot after"}>
+      <span className="Paging-element" key="dotdotdot after">
         ...
       </span>
     );
@@ -50,7 +62,11 @@ const getPages = (pages, selected, location) => {
 
   if (selected !== pages) {
     content.push(
-      <a href={`${location}&page=${selected + 1}`} key={"page after"}>
+      <a
+        href={`${location}&page=${selected + 1}`}
+        key="page after"
+        title="Next"
+      >
         <span className="Paging-element">&gt;</span>
       </a>
     );
@@ -59,29 +75,33 @@ const getPages = (pages, selected, location) => {
   return content;
 };
 
-const Paging = ({ page, pages, query }) => {
+const Paging = function Paging({ page, pages, query }) {
   const location = useLocation();
   let url = location.pathname;
 
   if (location.search) {
     url = location.search.replace(`&page=${query.get("page")}`, "");
   } else {
-    url = url + "?";
+    url = `${url}?`;
   }
 
   return (
     <div className="Paging">
-      <a href={`${url}&page=1`}>
-        <span className="Paging-element" key={"page-First"}>
-          &laquo;
-        </span>
-      </a>
+      {page !== 1 && (
+        <a href={`${url}&page=1`}>
+          <span className="Paging-element" key="page-First" title="First">
+            &laquo;
+          </span>
+        </a>
+      )}
       {getPages(pages, page, url)}
-      <a href={`${url}&page=${pages}`}>
-        <span className="Paging-element" key={"page-Last"}>
-          &raquo;
-        </span>
-      </a>
+      {page !== pages && (
+        <a href={`${url}&page=${pages}`}>
+          <span className="Paging-element" key="page-Last" title="Last">
+            &raquo;
+          </span>
+        </a>
+      )}
     </div>
   );
 };
